@@ -1,4 +1,4 @@
 2021 Dyson Virtual Open House
 
-npm init
+npm init\
 node server.js
