@@ -23,22 +23,29 @@ class App {
 
         this.io.on("connection", (socket) => {
             // console.log(socket.constructor.name);
-            this.clients[socket.id] = { color: {r: Math.floor(Math.random() * 255), g: Math.floor(Math.random() * 255), b: Math.floor(Math.random() * 255)} };
             // console.log(this.clients);
-            console.log("A user connected: " + socket.id);
+            console.log("A user connected: " + socket.handshake.address);
             socket.emit("id", socket.id);
-
+            
             socket.on("disconnect", () => {
-                console.log("Socket disconnected: " + socket.id);
+                console.log("Socket disconnected: " + socket.handshake.address.address);
                 if (this.clients && this.clients[socket.id]) {
+                    console.log("User disconnected: " + this.clients[socket.id].name);
                     delete this.clients[socket.id];
                     this.io.emit("removeClient", socket.id);
                 }
             });
+            
+            socket.on("name", (message) => {
+                this.clients[socket.id] = { name: message.name, color: {r: Math.floor(Math.random() * 255), g: Math.floor(Math.random() * 255), b: Math.floor(Math.random() * 255)} };
+                console.log(message.name + " connected with IP " + socket.handshake.address.address);
+                console.log(Object.keys(this.clients).length + " connected users.");
+            })
 
             socket.on("update", (message) => {
                 if (this.clients[socket.id]) {
                     this.clients[socket.id].position = message.position;
+                    this.clients[socket.id].name = message.name;
                 }
             })
         });
