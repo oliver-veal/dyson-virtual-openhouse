@@ -22,7 +22,7 @@
     "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
     "format:documents": "prettier --write \"**/*.html\"",
     "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
-    "format:styles": "prettier --write \"**/*.css\"",
+    "format:styles": "prettier --write \"**/*.css\" && stylelint --fix \"**/*.css\"",
     "start": "node server.js"
   },
   "dependencies": {
@@ -36,6 +36,10 @@
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-order": "^4.1.0"
   }
 }
