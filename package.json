@@ -21,7 +21,7 @@
   "scripts": {
     "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
     "format:documents": "prettier --write \"**/*.html\"",
-    "format:scripts": "prettier --write \"**/*.js\"",
+    "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
     "format:styles": "prettier --write \"**/*.css\"",
     "start": "node server.js"
   },
@@ -31,6 +31,11 @@
     "three": "^0.126.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.13",
+    "@babel/eslint-parser": "^7.13.10",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1"
   }
 }
