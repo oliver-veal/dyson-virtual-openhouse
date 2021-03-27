@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Open House 2021 - Dyson DesEng</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="main.css">
-		<script src="socket.io/socket.io.js"></script>
-	</head>
+  <head>
+    <title>Open House 2021 - Dyson DesEng</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <script src="socket.io/socket.io.js"></script>
+  </head>
 
-	<body>
-		<div id="info">
-			<span class="debug">Velocity: <span id="velocity">0</span></span>
-		</div>
+  <body>
+    <div id="info">
+      <span class="debug">Velocity: <span id="velocity">0</span></span>
+    </div>
 
-		<div id="modal-container">
-			<div id="modal">
-				<div id="modal-header">
-					<div id="modal-image"></div>
-				</div>
-				<div id="modal-body">
-					<h1 id="modal-title">Content baby!</h1>
-					<h2 id="modal-author">Oliver Veal</h2>
+    <div id="modal-container">
+      <div id="modal">
+        <div id="modal-header">
+          <div id="modal-image"></div>
+        </div>
+        <div id="modal-body">
+          <h1 id="modal-title">Content baby!</h1>
+          <h2 id="modal-author">Oliver Veal</h2>
 
-					<p id="modal-desc">This is a project I completed alonside the Holy McRollington Associatio(TM) when...</p>
+          <p id="modal-desc">
+            This is a project I completed alonside the Holy McRollington Associatio(TM) when...
+          </p>
 
-					<a href="" id="modal-link" target="blank">
-						<button id="modal-button"><span id="modal-button-text">View Project</span></button>
-					</a>
-				</div>
-			</div>
-		</div>
-		
-		<div id="blocker">
-			<div id="loading-screen">
-				<img src="assets/loader.gif" id="loading-bulb"/>
-				<div class="loading-bar">
-					<div id="progress-bar"></div>
-				</div>
-			</div>
+          <a href="" id="modal-link" target="blank">
+            <button id="modal-button"><span id="modal-button-text">View Project</span></button>
+          </a>
+        </div>
+      </div>
+    </div>
 
-			<div id="instructions">
-				<span style="font-size:36px">Click to Look Around</span>
-				<br /><br />
-				Move: WASD or Arrow Keys<br/>
-				Look: MOUSE
-			</div>
+    <div id="blocker">
+      <div id="loading-screen">
+        <img src="assets/loader.gif" id="loading-bulb" />
+        <div class="loading-bar">
+          <div id="progress-bar"></div>
+        </div>
+      </div>
 
-			<div id="name-screen">
-				<span style="font-size:36px">Enter a Name:</span>
-				<span style="font-size:18px">(leave blank to be anonymous)</span>
-				<form action="#" id="name-form">
-					<input type="text" id="name-input">
-				</form>
-			</div>
+      <div id="instructions">
+        <span style="font-size: 36px">Click to Look Around</span>
+        <br /><br />
+        Move: WASD or Arrow Keys<br />
+        Look: MOUSE
+      </div>
 
-		</div>
+      <div id="name-screen">
+        <span style="font-size: 36px">Enter a Name:</span>
+        <span style="font-size: 18px">(leave blank to be anonymous)</span>
+        <form action="#" id="name-form">
+          <input type="text" id="name-input" />
+        </form>
+      </div>
+    </div>
 
-		<script type="module" src="main.js"></script>
-	</body>
+    <script type="module" src="main.js"></script>
+  </body>
 </html>

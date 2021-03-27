@@ -1,17 +1,17 @@
-import { GameObject } from './game.js';
+import { GameObject } from './game.js'
 
 export class UI extends GameObject {
-    Init() {
-        this.slug;
+  Init() {
+    this.slug
 
-        this.game.events.RegisterEventListener("OnObjectClick", this, ({ object }) => {
-            let slug = object.userData.name.split(":")[1]; //TODO extract slug with some string manipulation.
+    this.game.events.RegisterEventListener('OnObjectClick', this, ({ object }) => {
+      let slug = object.userData.name.split(':')[1] //TODO extract slug with some string manipulation.
 
-            this.slug = slug;
+      this.slug = slug
 
-            slug = '"' + slug + '"';
+      slug = '"' + slug + '"'
 
-            let query = `
+      let query = `
             {
                 entries(section: "project", slug: ${slug}, limit: 1, orderBy: "title ASC") {
                   ... on project_project_Entry {
@@ -80,25 +80,25 @@ export class UI extends GameObject {
                   }
                 }
               }
-            `;
+            `
 
-            let body = JSON.stringify({ query, variables: {} });
+      let body = JSON.stringify({ query, variables: {} })
 
-            fetch('https://deshowcase.london/api', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer kh6W0EDk33edE3Wu_cWNykLSHVJUc_J0'
-                },
-                body
-            })
-            .then(r => r.json())
-            .then((data) => {
-              console.log(data);
-              this.game.events.Trigger("OpenModal", { data,  slug: this.slug });
-            }) // TODO Trigger an event with the data that opens a modal/url and locks control.
-            .catch(error => console.error(error));
-        });
-    }
+      fetch('https://deshowcase.london/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer kh6W0EDk33edE3Wu_cWNykLSHVJUc_J0',
+        },
+        body,
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          console.log(data)
+          this.game.events.Trigger('OpenModal', { data, slug: this.slug })
+        }) // TODO Trigger an event with the data that opens a modal/url and locks control.
+        .catch((error) => console.error(error))
+    })
+  }
 }
