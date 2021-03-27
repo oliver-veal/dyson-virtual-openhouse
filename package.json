@@ -2,8 +2,8 @@
   "name": "dyson-virtual-openhouse",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
   "author": "",
+  "license": "UNLICENSED",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
