@@ -19,11 +19,18 @@
   },
   "main": "server.js",
   "scripts": {
+    "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
+    "format:documents": "prettier --write \"**/*.html\"",
+    "format:scripts": "prettier --write \"**/*.js\"",
+    "format:styles": "prettier --write \"**/*.css\"",
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^4.0.0",
     "three": "^0.126.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
