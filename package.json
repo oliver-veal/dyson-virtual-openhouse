@@ -23,6 +23,9 @@
     "format:documents": "prettier --write \"**/*.html\"",
     "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
     "format:styles": "prettier --write \"**/*.css\" && stylelint --fix \"**/*.css\"",
+    "lint": "npm run lint:scripts && npm run lint:styles",
+    "lint:scripts": "eslint --ext \".js\"",
+    "lint:styles": "stylelint \"**/*.css\"",
     "start": "node server.js"
   },
   "dependencies": {
