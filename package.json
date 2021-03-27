@@ -1,9 +1,22 @@
 {
   "name": "dyson-virtual-openhouse",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "private": true,
+  "description": "Three.js-powered virtual exhibition for the 2021 Design Engineering Showcase.",
+  "homepage": "https://github.com/oliver-veal/dyson-virtual-openhouse#readme",
+  "bugs": {
+    "url": "https://github.com/oliver-veal/dyson-virtual-openhouse/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliver-veal/dyson-virtual-openhouse.git"
+  },
   "license": "UNLICENSED",
+  "author": {
+    "name": "Oliver Veal",
+    "email": "oliver.veal18@imperial.ac.uk",
+    "url": "https://github.com/oliver-veal"
+  },
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
