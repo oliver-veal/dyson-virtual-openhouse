@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const http = require('http')
 const { Server } = require('socket.io')
+const fetch = require('node-fetch')
 
 const port = 3000
 
@@ -18,10 +19,13 @@ class App {
       '/three/examples',
       express.static(path.join(__dirname, './node_modules/three/examples')),
     )
+    app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
+    // app.use('/tween', express.static(path.join(__dirname, './tween.js/dist')));
+    app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
 
     this.server = new http.Server(app)
 
-    this.io = new Server(this.server)
+    this.io = new Server(this.server, { pingTimeout: 60000, pingInterval: 25000 })
 
     this.io.on('connection', (socket) => {
       // console.log(socket.constructor.name);
@@ -39,16 +43,59 @@ class App {
       })
 
       socket.on('name', (message) => {
-        this.clients[socket.id] = {
-          name: message.name,
-          color: {
-            r: Math.floor(Math.random() * 255),
-            g: Math.floor(Math.random() * 255),
-            b: Math.floor(Math.random() * 255),
-          },
+        let name = message.name
+
+        if (name.length > 0) {
+          // verify name
+
+          if (name.length > this.CHARACTER_LIMIT) {
+            name = name.substring(0, this.CHARACTER_LIMIT)
+          }
+
+          name = this.ToTitleCase(name)
+
+          if (!/^[a-zA-Z\s]*$/.test(name)) {
+            name = ''
+          }
+
+          // prof filter
+
+          fetch(
+            `https://api1-eu.webpurify.com/services/rest/?method=webpurify.live.check&format=json&api_key=6d6ad9e38472fbb9d57c8c1e31cda9e6&text=${name}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+            },
+          )
+            .then((r) => r.json())
+            .then((data) => {
+              console.log(name, data)
+              if (data.rsp) {
+                if ('found' in data.rsp) {
+                  if (Number(data.rsp.found) === 0) {
+                    this.Login(socket, name)
+                  } else {
+                    console.log('Profanity detected, logging in with blank name.')
+                    this.Login(socket, '')
+                  }
+
+                  return
+                }
+              }
+
+              console.log('Error in profanity filter response, logging in with blank name.')
+              this.Login(socket, '')
+            })
+            .catch((error) => {
+              console.error(error)
+              this.Login(socket, '')
+            })
+        } else {
+          this.Login(socket, '')
         }
-        console.log(message.name + ' connected with IP ' + socket.handshake.address.address)
-        console.log(Object.keys(this.clients).length + ' connected users.')
       })
 
       socket.on('update', (message) => {
@@ -58,10 +105,32 @@ class App {
         }
       })
     })
+  }
+
+  Login(socket, name) {
+    this.clients[socket.id] = {
+      name,
+      color: {
+        r: Math.floor(Math.random() * 255),
+        g: Math.floor(Math.random() * 255),
+        b: Math.floor(Math.random() * 255),
+      },
+    }
+
+    console.log(name + ' connected with IP ' + socket.handshake.address.address)
+    console.log(Object.keys(this.clients).length + ' connected users.')
+
+    socket.emit('login', { name })
 
     setInterval(() => {
       this.io.emit('clients', this.clients)
     }, 50)
+  }
+
+  ToTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    })
   }
 
   Start() {

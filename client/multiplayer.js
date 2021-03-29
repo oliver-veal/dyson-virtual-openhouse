@@ -1,15 +1,15 @@
 import * as THREE from './three/build/three.module.js'
-import { TWEEN } from './three/examples/jsm/libs/tween.module.min.js'
 import { GameObject } from './game.js'
 
 import { SpriteText } from './spritetext.js'
 
 export class Multiplayer extends GameObject {
   Init() {
-    this.geometry = new THREE.SphereGeometry(1, 32, 32)
+    this.geometry = new THREE.SphereGeometry(0.25, 32, 32)
 
     this.socket = io()
     this.sId = ''
+    this.name
 
     this.clientMeshes = {}
 
@@ -21,18 +21,31 @@ export class Multiplayer extends GameObject {
       console.log('Disconnected: ' + message)
     })
 
+    this.socket.on('login', (message) => {
+      this.name = message.name
+
+      console.log('Logged in with name ' + message.name)
+
+      this.game.events.Trigger('Login', {})
+
+      setInterval(() => {
+        this.socket.emit('update', {
+          position: this.game.movement.controls.getObject().position,
+          name: this.name,
+        }) // Should use an event to get current position but w/e
+      })
+    })
+
     this.socket.on('id', (id) => {
       this.sId = id
+
+      if (this.name) {
+        this.socket.emit('name', { name: this.name })
+      }
     })
 
     this.game.events.RegisterEventListener('NameAdd', this, ({ name }) => {
       this.socket.emit('name', { name })
-      setInterval(() => {
-        this.socket.emit('update', {
-          position: this.game.movement.controls.getObject().position,
-          name,
-        }) // Should use an event to get current position but w/e
-      })
     })
 
     this.socket.on('clients', (clients) => {
@@ -55,10 +68,10 @@ export class Multiplayer extends GameObject {
           if (clientName.length > 0) {
             const nameTag = new SpriteText(clients[c].name)
             nameTag.fontFace = 'Helvetica Neue'
-            nameTag.fontSize = 1000
-            let scale = 1500
+            nameTag.fontSize = 200
+            let scale = 1000
             nameTag.scale.set(nameTag._canvas.width / scale, nameTag._canvas.height / scale, 1)
-            nameTag.position.y = 1.5
+            nameTag.position.y = 0.4
             group.add(nameTag)
           }
 
@@ -68,16 +81,22 @@ export class Multiplayer extends GameObject {
           this.game.scene.add(this.clientMeshes[c])
         } else {
           if (clients[c].position && c !== this.sId) {
-            // new TWEEN.Tween(this.clientMeshes[c].position)
-            // .to({
-            //     x: clients[c].position.x,
-            //     y: clients[c].position.y,
-            //     z: clients[c].position.z
-            // }, 50)
-            // .start()
-            this.clientMeshes[c].position.x = clients[c].position.x
-            this.clientMeshes[c].position.y = clients[c].position.y
-            this.clientMeshes[c].position.z = clients[c].position.z
+            let pos = this.clientMeshes[c].position
+            let target = clients[c].position
+
+            new TWEEN.Tween(pos)
+              .to(target, 50)
+              .onUpdate(() => {
+                this.clientMeshes[c].position.x = pos.x
+                this.clientMeshes[c].position.y = pos.y
+                this.clientMeshes[c].position.z = pos.z
+              })
+              .start()
+
+            // this.clientMeshes[c].position.x = clients[c].position.x;
+            // this.clientMeshes[c].position.y = clients[c].position.y;
+            // this.clientMeshes[c].position.z = clients[c].position.z;
+
             // // TODO interpolate
           }
         }
