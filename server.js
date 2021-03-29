@@ -15,6 +15,7 @@ class App {
     const app = express()
 
     app.use(express.static(path.join(__dirname, './client')))
+    app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
     app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
     app.use(
       '/three/examples',
