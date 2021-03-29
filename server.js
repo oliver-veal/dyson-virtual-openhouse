@@ -22,6 +22,7 @@ class App {
       express.static(path.join(__dirname, './node_modules/three/examples')),
     )
     app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
+    app.use('/localforage', express.static(path.join(__dirname, './node_modules/localforage/dist')))
     app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
 
     this.server = new http.Server(app)
@@ -112,7 +113,10 @@ class App {
 
       socket.on('stats', () => {
         this.intervals[socket.id] = setInterval(() => {
-          socket.emit('statsupdate', {count: Object.keys(this.clients).length, users: this.GetUserNames()})
+          socket.emit('statsupdate', {
+            count: Object.keys(this.clients).length,
+            users: this.GetUserNames(),
+          })
         }, 2000)
       })
     })

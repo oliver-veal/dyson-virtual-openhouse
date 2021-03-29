@@ -32,6 +32,7 @@
     "bezier-easing": "^2.1.0",
     "cannon": "^0.6.2",
     "express": "^4.17.1",
+    "localforage": "^1.9.0",
     "node-fetch": "^2.6.1",
     "socket.io": "^4.0.0",
     "three": "^0.126.1"

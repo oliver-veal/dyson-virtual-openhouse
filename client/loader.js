@@ -50,7 +50,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       loader,
-      'assets/finalc-08.glb',
+      'assets/finalc-11.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {
@@ -72,7 +72,7 @@ export class Loader extends GameObject {
 
                   if (child.userData.name.includes('glass')) {
                     child.material = self.glassMaterial
-                    child.geometry.computeVertexNormals();
+                    child.geometry.computeVertexNormals()
                   }
                 }
               }

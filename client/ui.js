@@ -7,7 +7,7 @@ export class UI extends GameObject {
     this.cache = {}
 
     this.game.events.RegisterEventListener('OnObjectClick', this, ({ object, slug }) => {
-      if (!object.userData.name.includes('ex:')) return;
+      if (!object.userData.name.includes('ex:')) return
 
       this.slug = slug
       slug = '"' + slug + '"'

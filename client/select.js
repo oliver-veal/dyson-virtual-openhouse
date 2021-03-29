@@ -19,7 +19,7 @@ export class Select extends GameObject {
       if (object.userData.name.includes('poster')) {
         open('https://deshowcase.london/events/' + slug)
       }
-    });
+    })
 
     this.mouse = new THREE.Vector2()
 
