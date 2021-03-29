@@ -212,8 +212,4 @@ export class UI extends GameObject {
 // 						}
 // 						}
 // 					}
-<<<<<<< HEAD
 // 				}`;
-=======
-// 				}`;
->>>>>>> 608da8afe155951e317501530ea2fda7f252b619
