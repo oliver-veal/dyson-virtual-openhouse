@@ -1,46 +1,4 @@
-<<<<<<< HEAD
-import {
-	Euler,
-	EventDispatcher,
-	Vector3
-} from './three/build/three.module.js';
-
-var PointerLockControls = function ( camera, domElement ) {
-
-	if ( domElement === undefined ) {
-		console.warn( 'THREE.PointerLockControls: The second parameter "domElement" is now mandatory.' );
-		domElement = document.body;
-	}
-
-	this.domElement = domElement;
-    this.ENABLED = false;
-	this.isLocked = false;
-
-	// Set to constrain the pitch of the camera
-	// Range is 0 to Math.PI radians
-	this.minPolarAngle = 0; // radians
-	this.maxPolarAngle = Math.PI; // radians
-
-	//
-	// internals
-	//
-
-	var scope = this;
-	var changeEvent = { type: 'change' };
-	var lockEvent = { type: 'lock' };
-	var unlockEvent = { type: 'unlock' };
-	var euler = new Euler( 0, 0, 0, 'YXZ' );
-	var PI_2 = Math.PI / 2;
-	var vec = new Vector3();
-    let mouseDown = false; //TODO handle this with the Input component.
-
-    function onMouseDown( event ) {
-		if (event.button === 0)
-        	mouseDown = true;        
-    }
-=======
 import { Euler, EventDispatcher, Vector3 } from './three/build/three.module.js'
->>>>>>> 608da8afe155951e317501530ea2fda7f252b619
 
 var PointerLockControls = function (camera, domElement) {
   if (domElement === undefined) {
