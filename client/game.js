@@ -45,6 +45,10 @@ export class Game {
 
     this.clock = new THREE.Clock()
 
+
+
+    THREE.Cache.enabled = true;
+
     window.addEventListener('resize', () => {
       const width = window.innerWidth
       const height = window.innerHeight

@@ -8,11 +8,11 @@ export class UI extends GameObject {
 
     this.game.events.RegisterEventListener('OnObjectClick', this, ({ object, slug }) => {
       if (!object.userData.name.includes('ex:')) return;
-      
+
       this.slug = slug
       slug = '"' + slug + '"'
 
-      console.log('Fetching ' + this.slug)
+      // console.log('Fetching ' + this.slug)
 
       if (this.cache[this.slug]) {
         this.game.events.Trigger('OpenModalWithContents', {
@@ -113,7 +113,7 @@ export class UI extends GameObject {
       })
         .then((r) => r.json())
         .then((data) => {
-          console.log(data)
+          // console.log(data)
 
           if (data.errors) {
             data.errors.forEach((error) => {

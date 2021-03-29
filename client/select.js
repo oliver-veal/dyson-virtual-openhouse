@@ -9,10 +9,13 @@ export class Select extends GameObject {
 
     this.game.events.RegisterEventListener('OnAddWorldObject', this, ({ object }) => {
       if (object.userData.name.includes('poster')) this.objects.push(object)
-      if (object.userData.name.includes('ex:')) this.objects.push(object)
+      if (object.userData.name.includes('ex:')) {
+        this.objects.push(object)
+      }
     })
 
     this.game.events.RegisterEventListener('OnObjectClick', this, ({ object, slug }) => {
+      // console.log(slug)
       if (object.userData.name.includes('poster')) {
         open('https://deshowcase.london/events/' + slug)
       }

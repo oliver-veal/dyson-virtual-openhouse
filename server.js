@@ -10,6 +10,7 @@ class App {
   constructor(port) {
     this.port = port
     this.clients = {}
+    this.intervals = {}
 
     const app = express()
 
@@ -32,6 +33,12 @@ class App {
 
       socket.on('disconnect', () => {
         console.log('Socket disconnected: ' + socket.handshake.address.address)
+
+        if (this.intervals[socket.id]) {
+          clearInterval(this.intervals[socket.id])
+          delete this.intervals[socket.id]
+        }
+
         if (this.clients && this.clients[socket.id]) {
           console.log('User disconnected: ' + this.clients[socket.id].name)
           delete this.clients[socket.id]
@@ -101,7 +108,22 @@ class App {
           this.clients[socket.id].name = message.name
         }
       })
+
+      socket.on('stats', () => {
+        this.intervals[socket.id] = setInterval(() => {
+          socket.emit('statsupdate', {count: Object.keys(this.clients).length, users: this.GetUserNames()})
+        }, 2000)
+      })
     })
+  }
+
+  GetUserNames() {
+    let userNames = []
+    Object.keys(this.clients).forEach((socketid) => {
+      let client = this.clients[socketid]
+      if (client.name.length > 0) userNames.push(client.name)
+    })
+    return userNames
   }
 
   Login(socket, name) {
@@ -119,8 +141,8 @@ class App {
 
     socket.emit('login', { name })
 
-    setInterval(() => {
-      this.io.emit('clients', this.clients)
+    this.intervals[socket.id] = setInterval(() => {
+      socket.emit('clients', this.clients)
     }, 50)
   }
 

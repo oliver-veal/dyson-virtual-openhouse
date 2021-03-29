@@ -260,7 +260,7 @@ export class InfoScreen extends Screen {
   }
 
   GetNameString(students) {
-    let name = ''
+    let name = 'by '
     for (let i = 0; i < students.length; i++) {
       name += students[i].title + ', '
     }
