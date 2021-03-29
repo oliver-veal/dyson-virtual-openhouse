@@ -1,141 +1,148 @@
-import * as THREE from './three/build/three.module.js';
-import { GameObject } from './game.js';
+import * as THREE from './three/build/three.module.js'
+import { GameObject } from './game.js'
 
-import { SpriteText } from './spritetext.js';
+import { SpriteText } from './spritetext.js'
 
 export class Multiplayer extends GameObject {
-    Init() {
-        this.geometry = new THREE.SphereGeometry(0.25, 32, 32);
-    
-        this.socket = io();
-        this.sId =  "";
-        this.name;
+  Init() {
+    this.geometry = new THREE.SphereGeometry(0.25, 32, 32)
 
-        this.clientMeshes = {};
+    this.socket = io()
+    this.sId = ''
+    this.name
 
-        this.socket.on("connect", function () {
-            console.log("Connected.");
-        });
+    this.clientMeshes = {}
 
-        this.socket.on("disconnect", function (message) {
-            console.log("Disconnected: " + message);
-        });
+    this.socket.on('connect', function () {
+      console.log('Connected.')
+    })
 
-        this.socket.on("login", (message) => {
-            this.name = message.name;
+    this.socket.on('disconnect', function (message) {
+      console.log('Disconnected: ' + message)
+    })
 
-            console.log("Logged in with name " + message.name);
+    this.socket.on('login', (message) => {
+      this.name = message.name
 
-            this.game.events.Trigger("Login", {});
+      console.log('Logged in with name ' + message.name)
 
-            setInterval(() => {
-                this.socket.emit("update", { position: this.game.movement.controls.getObject().position, name: this.name }); // Should use an event to get current position but w/e
-            });
-        });
+      this.game.events.Trigger('Login', {})
 
-        this.socket.on("id", (id) => {
-            this.sId = id;
+      setInterval(() => {
+        this.socket.emit('update', {
+          position: this.game.movement.controls.getObject().position,
+          name: this.name,
+        }) // Should use an event to get current position but w/e
+      })
+    })
 
-            if (this.name) {
-                this.socket.emit("name", { name: this.name });
-            }
-        });
-        
-        this.game.events.RegisterEventListener("NameAdd", this, ({ name }) => {
-            this.socket.emit("name", { name });
-        });
+    this.socket.on('id', (id) => {
+      this.sId = id
 
-        this.socket.on("clients", (clients) => {
-            Object.keys(clients).forEach((c) => {
-                if (!this.clientMeshes[c] && c !== this.sId) {
-                    const group = new THREE.Group();
+      if (this.name) {
+        this.socket.emit('name', { name: this.name })
+      }
+    })
 
-                    const material = new THREE.MeshPhongMaterial({ color: new THREE.Color(`rgb(${clients[c].color.r}, ${clients[c].color.g}, ${clients[c].color.b})`)});
-                    material.opacity = 0.3;
-                    material.transparent = true;
-                    const playerSphere = new THREE.Mesh(this.geometry, material);
-                    group.add(playerSphere);
+    this.game.events.RegisterEventListener('NameAdd', this, ({ name }) => {
+      this.socket.emit('name', { name })
+    })
 
-                    let clientName = clients[c].name;
+    this.socket.on('clients', (clients) => {
+      Object.keys(clients).forEach((c) => {
+        if (!this.clientMeshes[c] && c !== this.sId) {
+          const group = new THREE.Group()
 
-                    if (clientName.length > 0) {
-                        const nameTag = new SpriteText(clients[c].name);
-                        nameTag.fontFace = "Helvetica Neue";
-                        nameTag.fontSize = 200;
-                        let scale = 1000;
-                        nameTag.scale.set(nameTag._canvas.width / scale, nameTag._canvas.height / scale, 1);
-                        nameTag.position.y = 0.4;
-                        group.add(nameTag);
-                    }
+          const material = new THREE.MeshPhongMaterial({
+            color: new THREE.Color(
+              `rgb(${clients[c].color.r}, ${clients[c].color.g}, ${clients[c].color.b})`,
+            ),
+          })
+          material.opacity = 0.3
+          material.transparent = true
+          const playerSphere = new THREE.Mesh(this.geometry, material)
+          group.add(playerSphere)
 
-                    group.name = c;
-                    
-                    this.clientMeshes[c] = group;
-                    this.game.scene.add(this.clientMeshes[c]);
-                } else {
-                    if (clients[c].position && c !== this.sId) {
-                        let pos = this.clientMeshes[c].position;
-                        let target = clients[c].position;
+          let clientName = clients[c].name
 
-                        new TWEEN.Tween(pos)
-                        .to(target, 50)
-                        .onUpdate(() => {
-                            this.clientMeshes[c].position.x = pos.x;
-                            this.clientMeshes[c].position.y = pos.y;
-                            this.clientMeshes[c].position.z = pos.z;
-                        })
-                        .start();
+          if (clientName.length > 0) {
+            const nameTag = new SpriteText(clients[c].name)
+            nameTag.fontFace = 'Helvetica Neue'
+            nameTag.fontSize = 200
+            let scale = 1000
+            nameTag.scale.set(nameTag._canvas.width / scale, nameTag._canvas.height / scale, 1)
+            nameTag.position.y = 0.4
+            group.add(nameTag)
+          }
 
-                        // this.clientMeshes[c].position.x = clients[c].position.x;
-                        // this.clientMeshes[c].position.y = clients[c].position.y;
-                        // this.clientMeshes[c].position.z = clients[c].position.z;
+          group.name = c
 
-                        // // TODO interpolate
-                    }
-                }
-            });
-        });
+          this.clientMeshes[c] = group
+          this.game.scene.add(this.clientMeshes[c])
+        } else {
+          if (clients[c].position && c !== this.sId) {
+            let pos = this.clientMeshes[c].position
+            let target = clients[c].position
 
-        this.socket.on("removeClient", (id) => {
-            this.game.scene.remove(this.game.scene.getObjectByName(id));
-        });
-    }
+            new TWEEN.Tween(pos)
+              .to(target, 50)
+              .onUpdate(() => {
+                this.clientMeshes[c].position.x = pos.x
+                this.clientMeshes[c].position.y = pos.y
+                this.clientMeshes[c].position.z = pos.z
+              })
+              .start()
 
-    // MakeTextSprite( message, parameters )
-    // {
-    //     if ( parameters === undefined ) parameters = {};
-    //     var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Helvetica Neue";
-    //     var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 125;
-    //     var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 0;
-    //     var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:0};
-    //     var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:0, g:0, b:0, a:1 };
-    //     var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:255, b:255, a:1.0 };
+            // this.clientMeshes[c].position.x = clients[c].position.x;
+            // this.clientMeshes[c].position.y = clients[c].position.y;
+            // this.clientMeshes[c].position.z = clients[c].position.z;
 
-    //     var canvas = document.createElement('canvas');
-    //     var context = canvas.getContext('2d');
-    //     context.font = "Bold " + fontsize + "px " + fontface;
-    //     var metrics = context.measureText( message );
-    //     var textWidth = metrics.width;
-    //     canvas.width = textWidth;
-    //     canvas.height = fontsize;
-    //     console.log(textWidth)
+            // // TODO interpolate
+          }
+        }
+      })
+    })
 
-    //     context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-    //     context.strokeStyle = "none";
+    this.socket.on('removeClient', (id) => {
+      this.game.scene.remove(this.game.scene.getObjectByName(id))
+    })
+  }
 
-    //     // context.lineWidth = borderThickness;
-    //     // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
+  // MakeTextSprite( message, parameters )
+  // {
+  //     if ( parameters === undefined ) parameters = {};
+  //     var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Helvetica Neue";
+  //     var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 125;
+  //     var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 0;
+  //     var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:0};
+  //     var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:0, g:0, b:0, a:1 };
+  //     var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:255, b:255, a:1.0 };
 
-    //     context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
-    //     // context.fillText( message, borderThickness, fontsize + borderThickness);
-    //     context.fillRect(0, 0, textWidth, fontsize)
+  //     var canvas = document.createElement('canvas');
+  //     var context = canvas.getContext('2d');
+  //     context.font = "Bold " + fontsize + "px " + fontface;
+  //     var metrics = context.measureText( message );
+  //     var textWidth = metrics.width;
+  //     canvas.width = textWidth;
+  //     canvas.height = fontsize;
+  //     console.log(textWidth)
 
-    //     var texture = new THREE.Texture(canvas) 
-    //     texture.needsUpdate = true;
+  //     context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+  //     context.strokeStyle = "none";
 
-    //     var spriteMaterial = new THREE.SpriteMaterial( { map: texture } );
-    //     var sprite = new THREE.Sprite( spriteMaterial );
-    //     sprite.scale.set(0.005 * fontsize, 0.0025 * fontsize, 0 * fontsize);
-    //     return sprite;  
-    // }
+  //     // context.lineWidth = borderThickness;
+  //     // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
+
+  //     context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+  //     // context.fillText( message, borderThickness, fontsize + borderThickness);
+  //     context.fillRect(0, 0, textWidth, fontsize)
+
+  //     var texture = new THREE.Texture(canvas)
+  //     texture.needsUpdate = true;
+
+  //     var spriteMaterial = new THREE.SpriteMaterial( { map: texture } );
+  //     var sprite = new THREE.Sprite( spriteMaterial );
+  //     sprite.scale.set(0.005 * fontsize, 0.0025 * fontsize, 0 * fontsize);
+  //     return sprite;
+  // }
 }
