@@ -4,15 +4,19 @@ import { GameObject } from './game.js'
 
 export class Select extends GameObject {
   Init() {
-    //TODO OnAddWorldObject pickable event handler
-
     this.objects = []
     this.ENABLED = false
 
     this.game.events.RegisterEventListener('OnAddWorldObject', this, ({ object }) => {
       if (object.userData.name.includes('poster')) this.objects.push(object)
-      if (object.userData.name.includes('ex')) this.objects.push(object)
+      if (object.userData.name.includes('ex:')) this.objects.push(object)
     })
+
+    this.game.events.RegisterEventListener('OnObjectClick', this, ({ object, slug }) => {
+      if (object.userData.name.includes('poster')) {
+        open('https://deshowcase.london/events/' + slug)
+      }
+    });
 
     this.mouse = new THREE.Vector2()
 
@@ -25,28 +29,18 @@ export class Select extends GameObject {
 
     this.selectedObject = null
 
-    // pointer cursor
-
-    this.game.events.RegisterEventListener('OnObjectMouseOver', this, ({ object }) => {
+    this.game.events.RegisterEventListener('OnObjectMouseOver', this, () => {
       document.body.style.cursor = 'pointer'
       document.getElementById('crosshair').style.fontSize = '35px'
     })
 
-    this.game.events.RegisterEventListener('OnObjectMouseLeave', this, ({ object }) => {
+    this.game.events.RegisterEventListener('OnObjectMouseLeave', this, () => {
       document.body.style.cursor = ''
       document.getElementById('crosshair').style.fontSize = '20px'
     })
 
     this.game.events.RegisterEventListener('ControlsEnable', this, () => {
       this.ENABLED = true
-
-      // this.raycaster.setFromCamera( this.mouse, this.game.camera );
-      // const intersects = this.raycaster.intersectObjects(this.objects, true);
-
-      // if (intersects.length > 0)
-      //     document.body.style.cursor = "pointer";
-      // else
-      //     document.body.style.cursor = "";
     })
 
     this.game.events.RegisterEventListener('ControlsDisable', this, () => {
@@ -97,8 +91,6 @@ export class Select extends GameObject {
         })
         this.selectedObject = null
       }
-      // document.getElementById("blocker").style.cursor = "";
-      // renderer.domElement.style.filter = "blur(0px)";
     }
   }
 }

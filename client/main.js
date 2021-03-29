@@ -23,7 +23,7 @@ import Stats from './three/examples/jsm/libs/stats.module.js'
 
 class OpenHouse extends Game {
   constructor() {
-    super() // In a real "engine" this would be insanely configurable, things are just hardcoded here.
+    super()
 
     this.AddGameObject(new Loader())
 

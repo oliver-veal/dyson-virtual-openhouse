@@ -20,7 +20,6 @@ class App {
       express.static(path.join(__dirname, './node_modules/three/examples')),
     )
     app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
-    // app.use('/tween', express.static(path.join(__dirname, './tween.js/dist')));
     app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
 
     this.server = new http.Server(app)
@@ -28,8 +27,6 @@ class App {
     this.io = new Server(this.server, { pingTimeout: 60000, pingInterval: 25000 })
 
     this.io.on('connection', (socket) => {
-      // console.log(socket.constructor.name);
-      // console.log(this.clients);
       console.log('A user connected: ' + socket.handshake.address)
       socket.emit('id', socket.id)
 

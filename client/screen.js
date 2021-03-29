@@ -18,15 +18,6 @@ export class Screen extends GameObject {
   Show() {
     if (this.NUKED) return
 
-    // let timer = setInterval(() => {
-    //     if (op >= 1){
-    //         clearInterval(timer);
-    //         this.game.events.Trigger(this.name + "FadeIn", {});
-    //     }
-    //     this.element.style.opacity = this.easing(op);
-    //     op += 0.05;
-    // }, 10);
-
     if (this.tween) this.tween.stop()
 
     this.tween = new TWEEN.Tween(this.opacity)
@@ -50,16 +41,6 @@ export class Screen extends GameObject {
       this.element.style.display = 'none'
       return
     }
-
-    // let timer = setInterval(() => {
-    //     if (op <= 0){
-    //         clearInterval(timer);
-    //         this.element.style.display = "none";
-    //         this.game.events.Trigger(this.name + "FadeOut" , {});
-    //     }
-    //     this.element.style.opacity = op;
-    //     op -= 0.05;
-    // }, 10);
 
     if (this.tween) this.tween.stop()
 
@@ -137,8 +118,6 @@ export class NameScreen extends Screen {
         this.game.events.Trigger('NameAdd', { name: this.input.value })
         this.LOCKED = true
       }
-
-      //TODO loading UI stuff
 
       return false
     })
