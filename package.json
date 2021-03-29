@@ -1,14 +1,33 @@
 {
-  "name": "dyson",
+  "name": "dyson-virtual-openhouse",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "description": "Three.js-powered virtual exhibition for the 2021 Design Engineering Showcase.",
+  "homepage": "https://github.com/oliver-veal/dyson-virtual-openhouse#readme",
+  "bugs": {
+    "url": "https://github.com/oliver-veal/dyson-virtual-openhouse/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliver-veal/dyson-virtual-openhouse.git"
+  },
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Oliver Veal",
+    "email": "oliver.veal18@imperial.ac.uk",
+    "url": "https://github.com/oliver-veal"
+  },
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
+    "format:documents": "prettier --write \"**/*.html\"",
+    "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
+    "format:styles": "prettier --write \"**/*.css\" && stylelint --fix \"**/*.css\"",
+    "lint": "npm run lint:scripts && npm run lint:styles",
+    "lint:scripts": "eslint --ext \".js\"",
+    "lint:styles": "stylelint \"**/*.css\"",
     "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bezier-easing": "^2.1.0",
     "cannon": "^0.6.2",
@@ -17,5 +36,17 @@
     "socket.io": "^4.0.0",
     "three": "^0.126.1",
     "tween.js": "^16.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.13",
+    "@babel/eslint-parser": "^7.13.10",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-order": "^4.1.0"
   }
 }

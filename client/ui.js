@@ -1,30 +1,33 @@
-import { GameObject } from './game.js';
+import { GameObject } from './game.js'
 
 export class UI extends GameObject {
-	Init() {
-		this.slug;
+  Init() {
+    this.slug
 
-		this.cache = {};
+    this.cache = {}
 
-		this.game.events.RegisterEventListener("OnObjectClick", this, ({ object, slug }) => {
-			console.log(object);
-			this.slug = slug;
-			slug = '"' + slug + '"';
-			console.log("Fetching " + this.slug);
+    this.game.events.RegisterEventListener('OnObjectClick', this, ({ object, slug }) => {
+      console.log(object)
+      this.slug = slug
+      slug = '"' + slug + '"'
+      console.log('Fetching ' + this.slug)
 
-			// this.game.events.Trigger("OpenModalWithContents", {data: {}, slug: {}});
+      // this.game.events.Trigger("OpenModalWithContents", {data: {}, slug: {}});
 
-			// setTimeout(() => {
-			// 	this.cache["test-slug"] = {};
-			// 	this.game.events.Trigger("SetModalContents", {data: {}, slug: {}});
-			// }, 1000);
+      // setTimeout(() => {
+      // 	this.cache["test-slug"] = {};
+      // 	this.game.events.Trigger("SetModalContents", {data: {}, slug: {}});
+      // }, 1000);
 
-			if (this.cache[this.slug]) {
-				this.game.events.Trigger("OpenModalWithContents", {slug: this.slug, data: this.cache[this.slug]});
-			} else {
-				this.game.events.Trigger("OpenModal", {});
+      if (this.cache[this.slug]) {
+        this.game.events.Trigger('OpenModalWithContents', {
+          slug: this.slug,
+          data: this.cache[this.slug],
+        })
+      } else {
+        this.game.events.Trigger('OpenModal', {})
 
-				let query = `
+        let query = `
 				{
 					entries(siteId: 1, section: "project", slug: ${slug}, orderBy: "title ASC") {
 					  ... on project_project_Entry {
@@ -43,49 +46,53 @@ export class UI extends GameObject {
 						description
 					  }
 					}
-				  }`;
+				  }`
 
-				let body = JSON.stringify({ query, variables: {} });
+        let body = JSON.stringify({ query, variables: {} })
 
-				fetch('https://deshowcase.london/api', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-						'Authorization': 'Bearer vuxMlpBoejc4a5JGVa7cDzKTT7Wc8Yr4'
-					},
-					body
-				})
-				.then(r => r.json())
-				.then((data) => {
-					console.log(data);
+        fetch('https://deshowcase.london/api', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer vuxMlpBoejc4a5JGVa7cDzKTT7Wc8Yr4',
+          },
+          body,
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            console.log(data)
 
-					if (data.errors) {
-						data.errors.forEach(error => {
-							console.warn(error.message);
-						});
-			
-						this.game.events.Trigger("SetErrorModal", {message: "An unexpected error occurred when trying to fetch this project."});
-						return;
-					}
-					
-					if (data.data)
-						if (data.data.entries)
-							if (data.data.entries.length === 0) {
-								console.warn("No data entries received.");
-								this.game.events.Trigger("SetErrorModal", {message: "This project could not be found."});
-								return;
-							}
+            if (data.errors) {
+              data.errors.forEach((error) => {
+                console.warn(error.message)
+              })
 
-					this.cache[this.slug] = data;
-					this.game.events.Trigger("SetModalContents", { data,  slug: this.slug });
-				})
-				.catch(error => console.error(error));
-			}
-		});
+              this.game.events.Trigger('SetErrorModal', {
+                message: 'An unexpected error occurred when trying to fetch this project.',
+              })
+              return
+            }
 
-		this.game.events.RegisterEventListener("FetchProjectNames", this, () => {
-			let query = `
+            if (data.data)
+              if (data.data.entries)
+                if (data.data.entries.length === 0) {
+                  console.warn('No data entries received.')
+                  this.game.events.Trigger('SetErrorModal', {
+                    message: 'This project could not be found.',
+                  })
+                  return
+                }
+
+            this.cache[this.slug] = data
+            this.game.events.Trigger('SetModalContents', { data, slug: this.slug })
+          })
+          .catch((error) => console.error(error))
+      }
+    })
+
+    this.game.events.RegisterEventListener('FetchProjectNames', this, () => {
+      let query = `
 				{
 					entries(siteId: 1, section: "project", orderBy: "title ASC") {
 					  ... on project_project_Entry {
@@ -98,43 +105,43 @@ export class UI extends GameObject {
 						  }
 					  }
 					}
-				  }`;
+				  }`
 
-				let body = JSON.stringify({ query, variables: {} });
+      let body = JSON.stringify({ query, variables: {} })
 
-				fetch('https://deshowcase.london/api', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-						'Authorization': 'Bearer vuxMlpBoejc4a5JGVa7cDzKTT7Wc8Yr4'
-					},
-					body
-				})
-				.then(r => r.json())
-				.then((data) => {
-					console.log(data);
+      fetch('https://deshowcase.london/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer vuxMlpBoejc4a5JGVa7cDzKTT7Wc8Yr4',
+        },
+        body,
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          console.log(data)
 
-					if (data.errors) {
-						data.errors.forEach(error => {
-							console.warn(error.message);
-						});
+          if (data.errors) {
+            data.errors.forEach((error) => {
+              console.warn(error.message)
+            })
 
-						return;
-					}
-					
-					if (data.data)
-						if (data.data.entries)
-							if (data.data.entries.length === 0) {
-								console.warn("No data entries received.");
-								return;
-							}
-					
-					this.game.events.Trigger("LoadProjectNames", { data });
-				})
-				.catch(error => console.error(error));
-		});
-	}
+            return
+          }
+
+          if (data.data)
+            if (data.data.entries)
+              if (data.data.entries.length === 0) {
+                console.warn('No data entries received.')
+                return
+              }
+
+          this.game.events.Trigger('LoadProjectNames', { data })
+        })
+        .catch((error) => console.error(error))
+    })
+  }
 }
 
 // let query = `
@@ -205,4 +212,8 @@ export class UI extends GameObject {
 // 						}
 // 						}
 // 					}
+<<<<<<< HEAD
 // 				}`;
+=======
+// 				}`;
+>>>>>>> 608da8afe155951e317501530ea2fda7f252b619
