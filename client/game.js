@@ -1,7 +1,5 @@
 import * as THREE from './three/build/three.module.js';
 
-import Stats from './three/examples/jsm/libs/stats.module.js';
-
 export class Game {
     constructor() {
         // game objects
@@ -19,13 +17,23 @@ export class Game {
         this.container = document.createElement('div');
         document.body.appendChild(this.container);
     
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({ antialias: true});
         this.renderer.setPixelRatio( window.devicePixelRatio );
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.container.appendChild( this.renderer.domElement );
 
-        this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 2000 );
-        this.camera.position.y = 5; // TODO leave it up to controls to move the camera.
+        this.camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.01, 2000 );
+        this.camera.position.y = 1.6; 
+
+        let spawnPoint = {x: 13, z: -0.75};
+
+        this.camera.position.x = spawnPoint.x;
+        this.camera.position.z = spawnPoint.z;
+
+        this.camera.lookAt(new THREE.Vector3(0, 1.6, -0.75));
+
+        // const axesHelper = new THREE.AxesHelper( 5 );
+        // this.scene.add( axesHelper );
 
         this.scene = new THREE.Scene();
         this.scene.add(new THREE.AmbientLight( 0xffffff, 1 ));
@@ -41,9 +49,6 @@ export class Game {
 
             this.renderer.setSize( width, height );
         });
-
-        this.stats = new Stats();
-        this.container.appendChild(this.stats.dom);
     }
 
     AddGameObject(gameObject) {

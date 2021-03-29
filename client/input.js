@@ -13,6 +13,8 @@ export class Input extends GameObject {
                 this.game.events.Trigger("Move", { move: "forward", down })
                 break;
             case 'ArrowLeft':
+                this.game.events.Trigger("Move", { move: "panLeft", down })
+                break;
             case 'KeyA':
                 this.game.events.Trigger("Move", { move: "left", down })
                 break;
@@ -21,17 +23,11 @@ export class Input extends GameObject {
                 this.game.events.Trigger("Move", { move: "back", down })
                 break;
             case 'ArrowRight':
+                this.game.events.Trigger("Move", { move: "panRight", down })
+                break;
             case 'KeyD':
                 this.game.events.Trigger("Move", { move: "right", down })
                 break;
-            case 'Space':
-                this.game.events.Trigger("Move", { move: "jump", down })
-                break;
-            // case 'ControlLeft':
-            //     // Crouch()
-            //     movement.crouch = false;
-            case "ShiftLeft":
-                this.game.events.Trigger("Move", { move: "sprint", down })
         }
     }
 }

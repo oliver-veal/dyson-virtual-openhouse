@@ -1,5 +1,6 @@
 import * as THREE from './three/build/three.module.js';
 import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from './three/examples/jsm/loaders/DRACOLoader.js';
 
 import { GameObject } from './game.js';
 
@@ -32,11 +33,17 @@ export class Loader extends GameObject {
 
         let self = this;
 
+        const loader = new GLTFLoader();
+
+        const dracoLoader = new DRACOLoader();
+		dracoLoader.setDecoderPath( './three/examples/js/libs/draco/' );
+		dracoLoader.setDecoderConfig( { type: 'js' } );
+
+        loader.setDRACOLoader(dracoLoader);
+
         // Load skybox
-        this.Load(new GLTFLoader(), 'assets/build-10.glb', (gltf) => {
-
-            //TODO Break all this out into event handlers ----------------------------------------------------------------------------------------------------
-
+        this.Load(loader, 'assets/build-17.glb', (gltf) => {
+            let collisionObjects = [];
             gltf.scene.traverse( function ( child ) {
                 if ( child.isMesh ) {
                     if (child.material.map) {
@@ -44,36 +51,33 @@ export class Loader extends GameObject {
                         child.material.map.magFilter = THREE.LinearFilter;
                         child.material.map.minFilter = THREE.LinearFilter;
                         child.material.map.encoding = THREE.LinearEncoding;
-                    } // This stuff can stay here
+                    }
         
-                    if (child.userData) // This stuff needs to go in the Select event handlers
+                    if (child.userData)
                         if (child.userData.name) {
-                            // For now just broadcast object name. Do we need more info to do API calls and select objects?
-                            self.game.events.Trigger("OnAddWorldObject", {object: child});
+                            if (child.userData.name.includes("collision")) {
+                                collisionObjects.push(child);
+                                self.game.events.Trigger("OnAddCollisionObject", {object: child});
+                            } else {
+                                self.game.events.Trigger("OnAddWorldObject", {object: child});
 
-                            if (child.userData.name.includes("glass"))
-                                child.material = self.glassMaterial;
+                                if (child.userData.name.includes("glass"))
+                                    child.material = self.glassMaterial;
+                            }
                         }
                 }
+
+                dracoLoader.dispose();
             });
+
+            gltf.scene.children = gltf.scene.children.filter((e) => {
+                return collisionObjects.indexOf(e) < 0;
+            })
         
-            let scale = 4
-            gltf.scene.scale.set(scale, scale, scale)
+            // let scale = 1
+            // gltf.scene.scale.set(scale, scale, scale)
         
             this.game.scene.add( gltf.scene );
-        
-            // document.getElementById("blocker").style.backgroundColor = "rgba(29, 29, 27, 0)";
-            // document.getElementById("blocker").style.cursor = "pointer";
-            // document.getElementById("loading-screen").style.display = "none";
-            // document.getElementById("instructions").style.display = "none";
-            // document.getElementById("name").style.display = "flex";
-            // document.getElementById("name-form").addEventListener("submit", play);
-            // document.getElementById("name-input").focus()
-            // renderer.domElement.style.filter = "blur(10px)";
-            // renderer.domElement.style.transition = "filter .5s ease-in-out;"
-
-            // -----------------------------------------------------------------------------------------------------------------------------------------------
-
             this.game.events.Trigger("OnWorldLoad", {});
 
         }, (xhr) => {
@@ -82,7 +86,7 @@ export class Loader extends GameObject {
         }, (error) => console.error(error));
     }
 
-    Load(loader, urls, loaded, progress, error) { // Wow what an epic function!
+    Load(loader, urls, loaded, progress, error) {
         loader.load(urls, loaded, progress, error);
     }
 }
