@@ -29,9 +29,13 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "bezier-easing": "^2.1.0",
+    "cannon": "^0.6.2",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
     "socket.io": "^4.0.0",
-    "three": "^0.126.1"
+    "three": "^0.126.1",
+    "tween.js": "^16.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",

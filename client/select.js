@@ -7,6 +7,7 @@ export class Select extends GameObject {
     //TODO OnAddWorldObject pickable event handler
 
     this.objects = []
+    this.ENABLED = false
 
     this.game.events.RegisterEventListener('OnAddWorldObject', this, ({ object }) => {
       if (object.userData.name.includes('poster')) this.objects.push(object)
@@ -20,7 +21,7 @@ export class Select extends GameObject {
       this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     })
 
-    this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 15)
+    this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 5)
 
     this.selectedObject = null
 
@@ -28,9 +29,28 @@ export class Select extends GameObject {
 
     this.game.events.RegisterEventListener('OnObjectMouseOver', this, ({ object }) => {
       document.body.style.cursor = 'pointer'
+      document.getElementById('crosshair').style.fontSize = '35px'
     })
 
     this.game.events.RegisterEventListener('OnObjectMouseLeave', this, ({ object }) => {
+      document.body.style.cursor = ''
+      document.getElementById('crosshair').style.fontSize = '20px'
+    })
+
+    this.game.events.RegisterEventListener('ControlsEnable', this, () => {
+      this.ENABLED = true
+
+      // this.raycaster.setFromCamera( this.mouse, this.game.camera );
+      // const intersects = this.raycaster.intersectObjects(this.objects, true);
+
+      // if (intersects.length > 0)
+      //     document.body.style.cursor = "pointer";
+      // else
+      //     document.body.style.cursor = "";
+    })
+
+    this.game.events.RegisterEventListener('ControlsDisable', this, () => {
+      this.ENABLED = false
       document.body.style.cursor = ''
     })
 
@@ -41,19 +61,24 @@ export class Select extends GameObject {
     })
 
     window.addEventListener('mouseup', (event) => {
-      if (event.button === 0)
+      if (event.button === 0 && this.ENABLED && this.game.movement.controls.isLocked)
         if (this.selectedObject)
-          if (this.selectedObject === this.clickObject)
+          if (this.selectedObject === this.clickObject) {
             this.game.events.Trigger('OnObjectClick', {
               object: this.selectedObject,
+              slug: this.selectedObject.userData.name.split(':')[1],
             })
+            document.body.style.cursor = ''
+          }
 
       this.clickObject = null
     })
   }
 
   Update() {
-    this.raycaster.setFromCamera(this.mouse, this.game.camera)
+    if (!this.ENABLED) return
+
+    this.raycaster.setFromCamera({ x: 0, y: 0 }, this.game.camera)
     const intersects = this.raycaster.intersectObjects(this.objects, true)
 
     if (intersects.length > 0) {
@@ -61,12 +86,14 @@ export class Select extends GameObject {
         this.selectedObject = intersects[0].object
         this.game.events.Trigger('OnObjectMouseOver', {
           object: this.selectedObject,
+          slug: this.selectedObject.userData.name.split(':')[1],
         })
       }
     } else {
       if (this.selectedObject) {
         this.game.events.Trigger('OnObjectMouseLeave', {
           object: this.selectedObject,
+          slug: this.selectedObject.userData.name.split(':')[1],
         })
         this.selectedObject = null
       }
