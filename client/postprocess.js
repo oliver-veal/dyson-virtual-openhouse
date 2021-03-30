@@ -4,24 +4,14 @@ import { GameObject } from './game.js'
 
 import { EffectComposer } from './three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from './three/examples/jsm/postprocessing/RenderPass.js'
-import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 import { ShaderPass } from './three/examples/jsm/postprocessing/ShaderPass.js'
 import { OutlinePass } from './three/examples/jsm/postprocessing/OutlinePass.js'
 import { FXAAShader } from './three/examples/jsm/shaders/FXAAShader.js'
-import { VerticalBlurShader } from './three/examples/jsm/shaders/VerticalBlurShader.js'
-import { HorizontalBlurShader } from './three/examples/jsm/shaders/HorizontalBlurShader.js'
 
 export class PostProcessing extends GameObject {
   Init() {
-    // post-processing
-
     this.renderScene = new RenderPass(this.game.scene, this.game.camera)
-
-    // let bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.99, 0 );
-    // bloomPass.threshold = params.bloomThreshold;
-    // bloomPass.strength = params.bloomStrength;
-    // bloomPass.radius = params.bloomRadius;
 
     this.fxaaPass = new ShaderPass(FXAAShader)
     this.SetFXAAPixelRatio = () => {
@@ -45,15 +35,6 @@ export class PostProcessing extends GameObject {
     this.composer.addPass(this.renderScene)
     this.composer.addPass(this.outlinePass)
     this.composer.addPass(this.fxaaPass)
-
-    // let hblur = new ShaderPass( HorizontalBlurShader );
-    // composer.addPass( hblur );
-
-    // let vblur = new ShaderPass( VerticalBlurShader );
-    // vblur.renderToScreen = true;
-    // composer.addPass( vblur );
-
-    // composer.addPass( bloomPass );
 
     window.addEventListener('resize', () => {
       const width = window.innerWidth

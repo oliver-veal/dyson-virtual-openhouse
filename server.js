@@ -10,17 +10,19 @@ class App {
   constructor(port) {
     this.port = port
     this.clients = {}
+    this.intervals = {}
 
     const app = express()
 
     app.use(express.static(path.join(__dirname, './client')))
+    app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
     app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
     app.use(
       '/three/examples',
       express.static(path.join(__dirname, './node_modules/three/examples')),
     )
     app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
-    // app.use('/tween', express.static(path.join(__dirname, './tween.js/dist')));
+    app.use('/localforage', express.static(path.join(__dirname, './node_modules/localforage/dist')))
     app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
 
     this.server = new http.Server(app)
@@ -28,13 +30,17 @@ class App {
     this.io = new Server(this.server, { pingTimeout: 60000, pingInterval: 25000 })
 
     this.io.on('connection', (socket) => {
-      // console.log(socket.constructor.name);
-      // console.log(this.clients);
       console.log('A user connected: ' + socket.handshake.address)
       socket.emit('id', socket.id)
 
       socket.on('disconnect', () => {
         console.log('Socket disconnected: ' + socket.handshake.address.address)
+
+        if (this.intervals[socket.id]) {
+          clearInterval(this.intervals[socket.id])
+          delete this.intervals[socket.id]
+        }
+
         if (this.clients && this.clients[socket.id]) {
           console.log('User disconnected: ' + this.clients[socket.id].name)
           delete this.clients[socket.id]
@@ -104,7 +110,25 @@ class App {
           this.clients[socket.id].name = message.name
         }
       })
+
+      socket.on('stats', () => {
+        this.intervals[socket.id] = setInterval(() => {
+          socket.emit('statsupdate', {
+            count: Object.keys(this.clients).length,
+            users: this.GetUserNames(),
+          })
+        }, 2000)
+      })
     })
+  }
+
+  GetUserNames() {
+    let userNames = []
+    Object.keys(this.clients).forEach((socketid) => {
+      let client = this.clients[socketid]
+      if (client.name.length > 0) userNames.push(client.name)
+    })
+    return userNames
   }
 
   Login(socket, name) {
@@ -122,8 +146,8 @@ class App {
 
     socket.emit('login', { name })
 
-    setInterval(() => {
-      this.io.emit('clients', this.clients)
+    this.intervals[socket.id] = setInterval(() => {
+      socket.emit('clients', this.clients)
     }, 50)
   }
 

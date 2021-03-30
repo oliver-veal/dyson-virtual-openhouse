@@ -88,13 +88,6 @@ export class Movement extends GameObject {
   }
 
   Update(delta) {
-    // let { height, crouch, jump } = this.movement;
-    // let { jumpVel, gravity } = this.movementSettings;
-
-    // Start movement code
-
-    // this.movement.velocity.y -= gravity * 3 * delta;
-
     let panWish = 0
 
     if (this.ENABLED) {
@@ -112,36 +105,10 @@ export class Movement extends GameObject {
     this.controls.RotateCamera(this.panSpeed, 0)
 
     this.GetMovementDirection()
-
-    // if (this.movement.grounded) {
     this.movement.velocity = this.MoveGround(this.movement.direction, this.movement.velocity, delta)
-    // }
-    // else
-    // 	velocity = MoveAir(direction, velocity, delta);
-
-    // height = crouch ? 3 : 6;
-
-    // if (this.controls.getObject().position.y <= height ) {
-    //     this.movement.velocity.y = 0;
-    //     this.controls.getObject().position.y = height;
-
-    //     this.movement.grounded = true;
-    // } else {
-    //     this.movement.grounded = false;
-    // }
-
-    // if (this.movement.grounded && jump)
-    //     this.movement.velocity.y = jumpVel * 3;
-
-    // Check for collisions with world objects
-    // TODO CANNON.js
-
-    // GetWorldCollisions()
 
     this.controls.getObject().position.addScaledVector(this.movement.velocity, delta)
-    let { x, y, z } = this.controls.getObject().position //this.game.collision.player.position
-    // console.log(x, y, z);
-    // this.controls.getObject().position.set(x, y, z);
+    let { x, y, z } = this.controls.getObject().position
 
     this.game.events.Trigger('MovePlayer', { p: this.controls.getObject().position })
 
@@ -149,8 +116,6 @@ export class Movement extends GameObject {
     document.getElementById('velocity').innerHTML = Math.round((speed + Number.EPSILON) * 100) / 100
     document.getElementById('pos-x').innerHTML = Math.round((x + Number.EPSILON) * 100) / 100
     document.getElementById('pos-y').innerHTML = Math.round((z + Number.EPSILON) * 100) / 100
-
-    // End movement code
   }
 
   GetMovementDirection() {
@@ -169,10 +134,9 @@ export class Movement extends GameObject {
 
     let movForward = Number(this.movement.forward) - Number(this.movement.back)
     let movRight = Number(this.movement.right) - Number(this.movement.left)
-    // let movRight = 0;
 
     this.movement.axisDirection.set(movForward, 0, movRight)
-    this.movement.axisDirection.normalize() // this ensures consistent movements in all directions
+    this.movement.axisDirection.normalize()
 
     if (movForward === 0 && movRight == 0) this.movement.direction.set(0, 0, 0)
     else {
@@ -202,10 +166,6 @@ export class Movement extends GameObject {
       prevVel.multiplyScalar(Math.max(speed - drop, 0) / speed)
     }
 
-    // let maxVel = this.movement.sprint ? this.movementSettings.maxVelGroundSprint : this.movementSettings.maxVelGround;
-
-    // let max = this.movement.crouch ? 5 : maxVel;
-
     return this.Accelerate(
       accelDir,
       prevVel,
@@ -214,8 +174,4 @@ export class Movement extends GameObject {
       dt,
     )
   }
-
-  // MoveAir(accelDir, prevVel, dt) {
-  //     return this.Accelerate(accelDir, prevVel, movementSettings.airAccel, movementSettings.maxVelAir, dt);
-  // }
 }

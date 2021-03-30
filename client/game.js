@@ -45,6 +45,51 @@ export class Game {
 
     this.clock = new THREE.Clock()
 
+    // localforage.config({
+    //   name: 'misc_load_file_storage',
+    //   storeName: 'three_cache'
+    // });
+
+    // THREE.Cache.enabled = true;
+
+    // THREE.Cache.add = ( key, value, callback ) => {
+
+    //     localforage.setItem( key, value, callback );
+
+    //   }
+
+    //   THREE.Cache.get = ( key, callback ) => {
+
+    //     return localforage.getItem( key, function ( error, value ) {
+
+    //       // NOTE By default local storage returns only null, never undefined
+
+    //       if ( value === null ) {
+
+    //         callback( undefined );
+
+    //       } else {
+
+    //         callback( value );
+
+    //       }
+
+    //     });
+
+    //   }
+
+    //   THREE.Cache.remove = ( key, callback ) => {
+
+    //     localforage.removeItem( key, callback );
+
+    //   }
+
+    //   THREE.Cache.clear = () => {
+
+    //     localforage.clear();
+
+    //   }
+
     window.addEventListener('resize', () => {
       const width = window.innerWidth
       const height = window.innerHeight

@@ -19,7 +19,7 @@ export class Loader extends GameObject {
       envMapIntensity: 1,
       depthWrite: false,
       transmission: 0.85,
-      opacity: 1,
+      opacity: 0.5,
       transparent: true,
     })
 
@@ -50,7 +50,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       loader,
-      'assets/build-17.glb',
+      'assets/finalc-11.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {
@@ -70,7 +70,10 @@ export class Loader extends GameObject {
                 } else {
                   self.game.events.Trigger('OnAddWorldObject', { object: child })
 
-                  if (child.userData.name.includes('glass')) child.material = self.glassMaterial
+                  if (child.userData.name.includes('glass')) {
+                    child.material = self.glassMaterial
+                    child.geometry.computeVertexNormals()
+                  }
                 }
               }
           }

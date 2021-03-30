@@ -32,7 +32,7 @@ export class Multiplayer extends GameObject {
         this.socket.emit('update', {
           position: this.game.movement.controls.getObject().position,
           name: this.name,
-        }) // Should use an event to get current position but w/e
+        })
       })
     })
 
@@ -92,12 +92,6 @@ export class Multiplayer extends GameObject {
                 this.clientMeshes[c].position.z = pos.z
               })
               .start()
-
-            // this.clientMeshes[c].position.x = clients[c].position.x;
-            // this.clientMeshes[c].position.y = clients[c].position.y;
-            // this.clientMeshes[c].position.z = clients[c].position.z;
-
-            // // TODO interpolate
           }
         }
       })
@@ -107,42 +101,4 @@ export class Multiplayer extends GameObject {
       this.game.scene.remove(this.game.scene.getObjectByName(id))
     })
   }
-
-  // MakeTextSprite( message, parameters )
-  // {
-  //     if ( parameters === undefined ) parameters = {};
-  //     var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Helvetica Neue";
-  //     var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 125;
-  //     var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 0;
-  //     var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:0};
-  //     var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:0, g:0, b:0, a:1 };
-  //     var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:255, b:255, a:1.0 };
-
-  //     var canvas = document.createElement('canvas');
-  //     var context = canvas.getContext('2d');
-  //     context.font = "Bold " + fontsize + "px " + fontface;
-  //     var metrics = context.measureText( message );
-  //     var textWidth = metrics.width;
-  //     canvas.width = textWidth;
-  //     canvas.height = fontsize;
-  //     console.log(textWidth)
-
-  //     context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-  //     context.strokeStyle = "none";
-
-  //     // context.lineWidth = borderThickness;
-  //     // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
-
-  //     context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
-  //     // context.fillText( message, borderThickness, fontsize + borderThickness);
-  //     context.fillRect(0, 0, textWidth, fontsize)
-
-  //     var texture = new THREE.Texture(canvas)
-  //     texture.needsUpdate = true;
-
-  //     var spriteMaterial = new THREE.SpriteMaterial( { map: texture } );
-  //     var sprite = new THREE.Sprite( spriteMaterial );
-  //     sprite.scale.set(0.005 * fontsize, 0.0025 * fontsize, 0 * fontsize);
-  //     return sprite;
-  // }
 }
