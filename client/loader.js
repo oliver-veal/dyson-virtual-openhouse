@@ -26,7 +26,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       new THREE.CubeTextureLoader(),
-      GenerateCubeURLs('assets/skybox/', '.jpg'),
+      GenerateCubeURLs('cacheassets/skybox/', '.jpg'),
       (texture) => {
         this.game.scene.background = texture
         this.glassMaterial.envMap = texture
@@ -50,7 +50,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       loader,
-      'assets/finalc-11.glb',
+      'cacheassets/finalc-11.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {
