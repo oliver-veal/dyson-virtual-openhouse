@@ -96,7 +96,7 @@ export class Modal extends Screen {
     this.author.innerHTML = this.GetNameString(info.contributors)
     this.desc.innerHTML = this.Truncate(info.description, 150, true)
 
-    this.link.href = info.url //"https://deshowcase.london/projects/course/meng/" + slug;
+    this.link.href = info.url //"https://deshowcase.london/projects/course/meng/" + slug
   }
 
   Show() {
@@ -110,17 +110,18 @@ export class Modal extends Screen {
 
     this.escHandler = (event) => {
       if (event.code === 'Escape') {
-        // this.game.events.Trigger("UnNukeInstructions", {});
-        // this.game.events.Trigger("ShowInstructions", {});
-        // this.game.events.Trigger("ControlsDisable", {});
-        // this.game.events.Trigger("ControlsLockEnable", {});
-        // this.game.events.Trigger("ScreenBlurOff", {});
+        this.game.events.Trigger("UnNukeInstructions", {})
+        this.game.instructionsScreen.Show()
+        // this.game.events.Trigger("ShowInstructions", {})
+        // this.game.events.Trigger("ControlsDisable", {})
+        // this.game.events.Trigger("ControlsLockEnable", {})
+        // this.game.events.Trigger("ScreenBlurOff", {})
 
         this.Hide()
       }
     }
 
-    // document.getElementById("blocker").addEventListener("mouseup", this.handler);
+    // document.getElementById("blocker").addEventListener("mouseup", this.handler)
     document.addEventListener('keydown', this.escHandler)
 
     this.game.events.Trigger('NukeInstructions', {})
@@ -134,7 +135,7 @@ export class Modal extends Screen {
 
     this.blocker.style.display = 'flex'
 
-    // document.getElementById("blocker").removeEventListener("mouseup", this.handler);
+    // document.getElementById("blocker").removeEventListener("mouseup", this.handler)
     document.removeEventListener('keydown', this.escHandler)
 
     this.game.events.Trigger('UnNukeInstructions', {})

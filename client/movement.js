@@ -34,12 +34,28 @@ export class Movement extends GameObject {
       friction: 10,
     }
 
-    this.game.events.RegisterEventListener('Move', this, ({ move, down }) => {
-      this.movement[move] = down
+    this.nextPosition = this.controls.getObject().position.clone()
+    this.shouldClamp = false
+
+    this.game.collision.world.addEventListener('postStep', () => {
+      let { x, y, z } = this.game.collision.player.position
+      this.controls.getObject().position.set(x, y, z)
+      if (this.shouldClamp) {
+        this.game.collision.player.velocity.set(0, 0, 0)
+        this.shouldClamp = false
+      }
+    })
+
+    this.game.collision.world.addEventListener('beginContact', () => {
+      this.shouldClamp = true
     })
 
     this.ENABLED = false
     this.LOCK_ENABLED = false
+
+    this.game.events.RegisterEventListener('Move', this, ({ move, down }) => {
+      this.movement[move] = down
+    })
 
     this.game.events.RegisterEventListener('ControlsEnable', this, () => {
       this.ENABLED = true
@@ -57,11 +73,6 @@ export class Movement extends GameObject {
 
     this.game.events.RegisterEventListener('ControlsLockDisable', this, () => {
       this.LOCK_ENABLED = false
-    })
-
-    this.game.events.RegisterEventListener('PostPhysics', this, () => {
-      let { x, y, z } = this.game.collision.player.position
-      this.controls.getObject().position.set(x, y, z)
     })
 
     document.getElementById('blocker').addEventListener('click', () => {
@@ -105,17 +116,29 @@ export class Movement extends GameObject {
     this.controls.RotateCamera(this.panSpeed, 0)
 
     this.GetMovementDirection()
+    // let force = this.MoveGround(this.movement.direction, this.CANNON2THREE(this.game.collision.player.velocity), delta)
     this.movement.velocity = this.MoveGround(this.movement.direction, this.movement.velocity, delta)
 
-    this.controls.getObject().position.addScaledVector(this.movement.velocity, delta)
-    let { x, y, z } = this.controls.getObject().position
+    // this.game.collision.player.applyForce(this.THREE2CANNON(force), this.game.collision.player.position)
+    let { x, y, z } = this.movement.velocity
+    this.game.collision.player.velocity.set(x, y, z)
 
-    this.game.events.Trigger('MovePlayer', { p: this.controls.getObject().position })
+    // let { x, z } = this.controls.getObject().position
 
-    let speed = this.movement.velocity.length()
-    document.getElementById('velocity').innerHTML = Math.round((speed + Number.EPSILON) * 100) / 100
-    document.getElementById('pos-x').innerHTML = Math.round((x + Number.EPSILON) * 100) / 100
-    document.getElementById('pos-y').innerHTML = Math.round((z + Number.EPSILON) * 100) / 100
+    // let speed = this.game.collision.player.velocity.length()
+    // document.getElementById('velocity').innerHTML = Math.round((speed + Number.EPSILON) * 100) / 100
+    // document.getElementById('pos-x').innerHTML = Math.round((x + Number.EPSILON) * 100) / 100
+    // document.getElementById('pos-y').innerHTML = Math.round((z + Number.EPSILON) * 100) / 100
+  }
+
+  THREE2CANNON(v) {
+    let { x, y, z } = v
+    return new CANNON.Vec3(x, y, z)
+  }
+
+  CANNON2THREE(v) {
+    let { x, y, z } = v
+    return new THREE.Vector3(x, y, z)
   }
 
   GetMovementDirection() {
@@ -156,6 +179,7 @@ export class Movement extends GameObject {
     if (projVel + accelVel > maxVelocity) accelVel = maxVelocity - projVel
 
     return prevVel.add(accelDir.multiplyScalar(accelVel))
+    // return accelDir.multiplyScalar(accelVel)
   }
 
   MoveGround(accelDir, prevVel, dt) {

@@ -255,7 +255,7 @@ export class InfoScreen extends Screen {
 
     this.game.events.RegisterEventListener('UnNukeInstructions', this, () => {
       this.NUKED = false
-      if (this.OPEN) this.Show()
+      // if (this.OPEN) this.Show()
     })
   }
 
