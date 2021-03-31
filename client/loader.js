@@ -62,6 +62,9 @@ export class Loader extends GameObject {
               child.material.map.encoding = THREE.LinearEncoding
             }
 
+            // test if scene is gpu or cpu bound
+            // child.material = new THREE.MeshBasicMaterial()
+
             if (child.userData)
               if (child.userData.name) {
                 if (child.userData.name.includes('collision')) {
@@ -78,18 +81,20 @@ export class Loader extends GameObject {
               }
           }
 
-          dracoLoader.dispose()
         })
-
+        
         gltf.scene.children = gltf.scene.children.filter((e) => {
           return collisionObjects.indexOf(e) < 0
         })
 
+        gltf.scene.overrideMaterial = new THREE.MeshBasicMaterial()
+        
         // let scale = 1
         // gltf.scene.scale.set(scale, scale, scale)
-
+        
         this.game.scene.add(gltf.scene)
         this.game.events.Trigger('OnWorldLoad', {})
+        dracoLoader.dispose()
       },
       (xhr) => {
         let progress = (xhr.loaded / xhr.total) * 100

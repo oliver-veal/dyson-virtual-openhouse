@@ -63,18 +63,16 @@ class OpenHouse extends Game {
 
     this.stats = new Stats();
     this.container.appendChild(this.stats.dom);
-    this.dt = 1/10 * 1000
+    this.dt = 1/10
   }
 
   Update(delta) {
     TWEEN.update()
 
-    
     let dt = Math.min(this.dt, delta)
     this.movement.Update(dt)
     this.collision.world.step(dt / 2)
     this.collision.world.step(dt / 2)
-    
     
     // this.debug.update();
     this.select.Update()
