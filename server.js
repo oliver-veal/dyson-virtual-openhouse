@@ -24,11 +24,13 @@ class App {
       }),
     )
     app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
-    app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
-    app.use(
-      '/three/examples',
-      express.static(path.join(__dirname, './node_modules/three/examples')),
-    )
+    // app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
+    // app.use(
+    //   '/three/examples',
+    //   express.static(path.join(__dirname, './node_modules/three/examples')),
+    // )
+    app.use('/three', express.static('/Users/oli/code/three.js'))
+
     app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
     app.use('/localforage', express.static(path.join(__dirname, './node_modules/localforage/dist')))
     app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))

@@ -1,5 +1,3 @@
-import * as THREE from './three/build/three.module.js'
-
 import './cannon/cannon.min.js'
 
 import { GameObject } from './game.js'
