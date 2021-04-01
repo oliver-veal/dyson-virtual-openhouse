@@ -1,3 +1,4 @@
+import * as THREE from './three/build/three.module.js'
 import { Game } from './game.js'
 
 import { PostProcessing } from './postprocess.js'
@@ -24,6 +25,8 @@ import Stats from './three/examples/jsm/libs/stats.module.js'
 class OpenHouse extends Game {
   constructor() {
     super()
+    this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
+    this.camera.position.set(13, 1.6, -0.75)
 
     this.AddGameObject(new Loader())
 
@@ -60,16 +63,18 @@ class OpenHouse extends Game {
 
     // this.stats = new Stats();
     // this.container.appendChild(this.stats.dom);
+    this.dt = 1 / 10
   }
 
   Update(delta) {
     TWEEN.update()
 
-    this.movement.Update(delta)
-    this.collision.world.step(delta)
-    this.events.Trigger('PostPhysics', {})
-    // this.debug.update();
+    let dt = Math.min(this.dt, delta)
+    this.movement.Update(dt)
+    this.collision.world.step(dt / 2)
+    this.collision.world.step(dt / 2)
 
+    // this.debug.update();
     this.select.Update()
     this.postProcessing.Update()
     // this.stats.update();

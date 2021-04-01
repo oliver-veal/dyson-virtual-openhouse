@@ -5,12 +5,16 @@ import { GameObject } from './game.js'
 export class Select extends GameObject {
   Init() {
     this.objects = []
+    this.objectGroups = {}
     this.ENABLED = false
 
     this.game.events.RegisterEventListener('OnAddWorldObject', this, ({ object }) => {
       if (object.userData.name.includes('poster')) this.objects.push(object)
       if (object.userData.name.includes('ex:')) {
         this.objects.push(object)
+        let slug = this.GetSlug(object)
+        if (!this.objectGroups[slug]) this.objectGroups[slug] = []
+        this.objectGroups[slug].push(object)
       }
     })
 
@@ -63,13 +67,17 @@ export class Select extends GameObject {
           if (this.selectedObject === this.clickObject) {
             this.game.events.Trigger('OnObjectClick', {
               object: this.selectedObject,
-              slug: this.selectedObject.userData.name.split(':')[1],
+              slug: this.GetSlug(this.selectedObject),
             })
             document.body.style.cursor = ''
           }
 
       this.clickObject = null
     })
+  }
+
+  GetSlug(object) {
+    return object.userData.name.split(':')[1]
   }
 
   Update() {
@@ -81,17 +89,16 @@ export class Select extends GameObject {
     if (intersects.length > 0) {
       if (this.selectedObject !== intersects[0].object) {
         this.selectedObject = intersects[0].object
+        let slug = this.GetSlug(this.selectedObject)
         this.game.events.Trigger('OnObjectMouseOver', {
           object: this.selectedObject,
-          slug: this.selectedObject.userData.name.split(':')[1],
+          objects: this.objectGroups[slug],
+          slug,
         })
       }
     } else {
       if (this.selectedObject) {
-        this.game.events.Trigger('OnObjectMouseLeave', {
-          object: this.selectedObject,
-          slug: this.selectedObject.userData.name.split(':')[1],
-        })
+        this.game.events.Trigger('OnObjectMouseLeave', {})
         this.selectedObject = null
       }
     }
