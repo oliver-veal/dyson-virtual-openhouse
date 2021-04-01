@@ -50,7 +50,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       loader,
-      'cacheassets/finalc-23.glb',
+      'cacheassets/file.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {
