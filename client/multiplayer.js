@@ -23,10 +23,10 @@ export class Multiplayer extends GameObject {
 
     this.socket.on('login', (message) => {
       this.name = message.name
-      if (this.name.includes('Speedy')) {
-        this.game.movement.movementSettings.maxVelGround *= 5
-        this.game.movement.movementSettings.friction *= 0.25
-      }
+      // if (this.name.includes('Speedy')) {
+      //   this.game.movement.movementSettings.maxVelGround *= 5
+      //   this.game.movement.movementSettings.friction *= 0.25
+      // }
       console.log('Logged in with name ' + message.name)
 
       this.game.events.Trigger('Login', {})

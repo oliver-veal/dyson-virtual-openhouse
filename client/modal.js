@@ -110,7 +110,7 @@ export class Modal extends Screen {
 
     this.escHandler = (event) => {
       if (event.code === 'Escape') {
-        this.game.events.Trigger("UnNukeInstructions", {})
+        this.game.events.Trigger('UnNukeInstructions', {})
         this.game.instructionsScreen.Show()
         // this.game.events.Trigger("ShowInstructions", {})
         // this.game.events.Trigger("ControlsDisable", {})
