@@ -28,14 +28,6 @@ export class Game {
       0.01,
       2000,
     )
-    this.camera.position.y = 1.6
-
-    let spawnPoint = { x: 13, z: -0.75 }
-
-    this.camera.position.x = spawnPoint.x
-    this.camera.position.z = spawnPoint.z
-
-    this.camera.lookAt(new THREE.Vector3(0, 1.6, -0.75))
 
     // const axesHelper = new THREE.AxesHelper( 5 );
     // this.scene.add( axesHelper );
