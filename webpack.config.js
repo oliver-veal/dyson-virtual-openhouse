@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './client/main.js',
@@ -11,5 +11,5 @@ module.exports = {
   },
   resolve: {
     modules: [path.resolve('/Users/oli/code'), 'node_modules'],
-  }
-};
+  },
+}

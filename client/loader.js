@@ -81,18 +81,17 @@ export class Loader extends GameObject {
                 }
               }
           }
-
         })
-        
+
         gltf.scene.children = gltf.scene.children.filter((e) => {
           return collisionObjects.indexOf(e) < 0
         })
 
         gltf.scene.overrideMaterial = new THREE.MeshBasicMaterial()
-        
+
         // let scale = 1
         // gltf.scene.scale.set(scale, scale, scale)
-        
+
         this.game.scene.add(gltf.scene)
         this.game.events.Trigger('OnWorldLoad', {})
         dracoLoader.dispose()
