@@ -1,4 +1,5 @@
-import * as THREE from './three/build/three.module.js'
+import * as THREE from 'three/build/three.module.js'
+import { localforage } from 'localforage/dist/localforage.js'
 
 export class Game {
   constructor() {
@@ -46,41 +47,41 @@ export class Game {
 
     THREE.Cache.add = ( key, value, callback ) => {
 
-        localforage.setItem( key, value, callback );
+      localforage.setItem( key, value, callback );
 
-      }
+    }
 
-      THREE.Cache.get = ( key, callback ) => {
+    THREE.Cache.get = ( key, callback ) => {
 
-        return localforage.getItem( key, function ( error, value ) {
+      return localforage.getItem( key, function ( error, value ) {
 
-          // NOTE By default local storage returns only null, never undefined
+        // NOTE By default local storage returns only null, never undefined
 
-          if ( value === null ) {
+        if ( value === null ) {
 
-            callback( undefined );
+          callback( undefined );
 
-          } else {
+        } else {
 
-            callback( value );
+          callback( value );
 
-          }
+        }
 
-        });
+      });
 
-      }
+    }
 
-      THREE.Cache.remove = ( key, callback ) => {
+    THREE.Cache.remove = ( key, callback ) => {
 
-        localforage.removeItem( key, callback );
+      localforage.removeItem( key, callback );
 
-      }
+    }
 
-      THREE.Cache.clear = () => {
+    THREE.Cache.clear = () => {
 
-        localforage.clear();
+      localforage.clear();
 
-      }
+    }
 
     window.addEventListener('resize', () => {
       const width = window.innerWidth

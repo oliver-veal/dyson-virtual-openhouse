@@ -1,4 +1,6 @@
-import * as THREE from './three/build/three.module.js'
+import { io } from 'socket.io-client'
+
+import * as THREE from 'three/build/three.module.js'
 import { GameObject } from './game.js'
 
 import { SpriteText } from './spritetext.js'

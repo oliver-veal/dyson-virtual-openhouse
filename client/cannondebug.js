@@ -1,6 +1,6 @@
-import * as THREE from './three/build/three.module.js'
+import * as THREE from 'three/build/three.module.js'
 
-import './cannon/cannon.min.js'
+import * as CANNON from 'cannon/build/cannon.min.js'
 /**
  * Adds Three.js primitives into the scene where all the Cannon bodies and shapes are.
  * @class CannonDebugRenderer

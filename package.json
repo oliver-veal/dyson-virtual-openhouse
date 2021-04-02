@@ -19,6 +19,7 @@
   },
   "main": "server.js",
   "scripts": {
+    "build": "webpack",
     "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
     "format:documents": "prettier --write \"**/*.html\"",
     "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
@@ -35,6 +36,7 @@
     "localforage": "^1.9.0",
     "node-fetch": "^2.6.1",
     "socket.io": "^4.0.0",
+    "socket.io-client": "^4.0.1",
     "three": "github:oliver-veal/three.js"
   },
   "devDependencies": {
@@ -47,6 +49,8 @@
     "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
-    "stylelint-order": "^4.1.0"
+    "stylelint-order": "^4.1.0",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
   }
 }

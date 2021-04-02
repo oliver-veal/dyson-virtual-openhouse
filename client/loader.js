@@ -1,6 +1,6 @@
-import * as THREE from './three/build/three.module.js'
-import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from './three/examples/jsm/loaders/DRACOLoader.js'
+import * as THREE from 'three/build/three.module.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 import { GameObject } from './game.js'
 
@@ -26,7 +26,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       new THREE.CubeTextureLoader(),
-      GenerateCubeURLs('cacheassets/skybox/', '.jpg'),
+      GenerateCubeURLs('assets/skybox/', '.jpg'),
       (texture) => {
         this.game.scene.background = texture
         this.glassMaterial.envMap = texture
@@ -43,14 +43,15 @@ export class Loader extends GameObject {
 
     const dracoLoader = new DRACOLoader()
     dracoLoader.setDecoderPath('./three/examples/js/libs/draco/')
-    dracoLoader.setDecoderConfig({ type: 'js' })
+    dracoLoader.setDecoderConfig({})
+    dracoLoader.setWorkerLimit(4)
 
     loader.setDRACOLoader(dracoLoader)
 
     // Load skybox
     this.Load(
       loader,
-      'cacheassets/finalc-20.glb',
+      'assets/2.0/sep-01-c3.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {

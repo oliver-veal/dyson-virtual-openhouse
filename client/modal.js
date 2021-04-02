@@ -1,6 +1,3 @@
-import * as THREE from './three/build/three.module.js'
-
-import { GameObject } from './game.js'
 import { Screen } from './screen.js'
 
 export class Modal extends Screen {

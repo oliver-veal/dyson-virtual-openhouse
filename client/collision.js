@@ -1,4 +1,4 @@
-import './cannon/cannon.min.js'
+import * as CANNON from 'cannon/build/cannon.min.js'
 
 import { GameObject } from './game.js'
 
