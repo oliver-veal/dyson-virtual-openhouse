@@ -17,9 +17,11 @@ export class PostProcessing extends GameObject {
     this.renderScene = new RenderPass(this.game.scene, this.game.camera)
 
     this.fxaaPass = new ShaderPass(FXAAShader)
-    // this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
-    // this.aaPass.sampleLevel = 1
-    // this.aaPass.unbiased = true
+    this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
+    this.aaPass.sampleLevel = 1
+    this.aaPass.unbiased = true
+
+    console.log(this.game.renderer.getMaxAnisotropy())
 
     this.SetFXAAPixelRatio = () => {
       const pixelRatio = this.game.renderer.getPixelRatio()
@@ -41,7 +43,7 @@ export class PostProcessing extends GameObject {
 
     this.composer = new EffectComposer(this.game.renderer)
     this.composer.addPass(this.renderScene)
-    // this.composer.addPass(this.aaPass)
+    this.composer.addPass(this.aaPass)
     this.composer.addPass(this.outlinePass)
     this.composer.addPass(this.fxaaPass)
 

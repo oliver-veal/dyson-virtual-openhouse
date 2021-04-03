@@ -50,7 +50,7 @@ export class Loader extends GameObject {
     // Load skybox
     this.Load(
       loader,
-      'cacheassets/file.glb',
+      'cacheassets/3.0/scene-c.glb',
       (gltf) => {
         let collisionObjects = []
         gltf.scene.traverse(function (child) {
@@ -60,6 +60,8 @@ export class Loader extends GameObject {
               child.material.map.magFilter = THREE.LinearFilter
               child.material.map.minFilter = THREE.LinearFilter
               child.material.map.encoding = THREE.LinearEncoding
+              // child.material.map.anisotropy = 16
+              // console.log(child.material.map.anisotropy)
             }
 
             // test if scene is gpu or cpu bound
