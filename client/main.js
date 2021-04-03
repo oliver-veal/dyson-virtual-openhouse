@@ -63,8 +63,8 @@ class OpenHouse extends Game {
 
     this.debug = new CannonDebugRenderer(this.scene, this.collision.world, {})
 
-    this.stats = new Stats()
-    this.container.appendChild(this.stats.dom)
+    // this.stats = new Stats();
+    // this.container.appendChild(this.stats.dom);
     this.dt = 1 / 10
   }
 
@@ -79,7 +79,7 @@ class OpenHouse extends Game {
     // this.debug.update();
     this.select.Update()
     this.postProcessing.Update()
-    this.stats.update()
+    // this.stats.update();
   }
 }
 

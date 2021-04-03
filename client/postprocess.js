@@ -5,21 +5,23 @@ import { GameObject } from './game.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
-import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
-import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js'
-import { SSAARenderPass } from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
-import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass.js'
+import { ShaderPass } from './three/examples/jsm/postprocessing/ShaderPass.js'
+import { OutlinePass } from './three/examples/jsm/postprocessing/OutlinePass.js'
+import { FXAAShader } from './three/examples/jsm/shaders/FXAAShader.js'
+import { SMAAPass } from './three/examples/jsm/postprocessing/SMAAPass.js'
+import { SSAARenderPass } from './three/examples/jsm/postprocessing/SSAARenderPass.js'
+import { TAARenderPass } from './three/examples/jsm/postprocessing/TAARenderPass.js'
 
 export class PostProcessing extends GameObject {
   Init() {
     this.renderScene = new RenderPass(this.game.scene, this.game.camera)
 
     this.fxaaPass = new ShaderPass(FXAAShader)
-    // this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
-    // this.aaPass.sampleLevel = 1
-    // this.aaPass.unbiased = true
+    this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
+    this.aaPass.sampleLevel = 1
+    this.aaPass.unbiased = true
+
+    console.log(this.game.renderer.getMaxAnisotropy())
 
     this.SetFXAAPixelRatio = () => {
       const pixelRatio = this.game.renderer.getPixelRatio()
@@ -41,7 +43,7 @@ export class PostProcessing extends GameObject {
 
     this.composer = new EffectComposer(this.game.renderer)
     this.composer.addPass(this.renderScene)
-    // this.composer.addPass(this.aaPass)
+    this.composer.addPass(this.aaPass)
     this.composer.addPass(this.outlinePass)
     this.composer.addPass(this.fxaaPass)
 
