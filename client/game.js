@@ -43,6 +43,17 @@ export class Game {
       storeName: 'three_cache',
     })
 
+    localforage
+      .keys()
+      .then(function (keys) {
+        // An array of all the key names.
+        console.log(keys)
+      })
+      .catch(function (err) {
+        // This code runs if there were any errors
+        console.log(err)
+      })
+
     THREE.Cache.enabled = true
 
     THREE.Cache.add = (key, value, callback) => {

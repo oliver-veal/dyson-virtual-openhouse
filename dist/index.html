@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <title>Open House 2021 - Dyson DesEng</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="robots" content="none, noimageindex" />
+    <link rel="shortcut icon" href="/assets/favicons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicons/favicon-48x48.png" />
+    <!-- <link rel="manifest" href="/assets/favicons/manifest.json" /> -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#fff" />
+    <meta name="application-name" content="Virtual Open House" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-touch-icon-76x76.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="/assets/favicons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="/assets/favicons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="/assets/favicons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="/assets/favicons/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="167x167"
+      href="/assets/favicons/apple-touch-icon-167x167.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="1024x1024"
+      href="/assets/favicons/apple-touch-icon-1024x1024.png"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Virtual Open House" />
+    <meta name="msapplication-TileColor" content="#000" />
+    <meta name="msapplication-TileImage" content="/assets/favicons/mstile-144x144.png" />
+    <meta name="msapplication-config" content="/assets/favicons/browserconfig.xml" />
+  <script defer src="runtime.573a7bd612fef9b19387.js"></script><script defer src="vendors.86abaadfc46805da86f0.js"></script><script defer src="main.a62c90de93f00a268220.js"></script></head>
+  <body>
+    <div id="info">
+      <span class="debug">Velocity: <span id="velocity">0</span></span>
+      <span class="debug"
+        >Position: <span id="pos-x">0</span><span>, </span><span id="pos-y">0</span></span
+      >
+    </div>
+    <div id="modal-screen">
+      <div id="modal">
+        <button id="modal-close">
+          <span>&#x2715;</span>
+        </button>
+        <div id="modal-contents">
+          <div id="modal-loading">
+            <div id="modal-loading-medium"></div>
+            <div id="modal-loading-short"></div>
+            <div id="modal-loading-long"></div>
+          </div>
+          <div id="modal-error">An error occurred while loading this project.</div>
+          <div id="modal-header"><div id="modal-image"></div></div>
+          <div id="modal-body">
+            <h1 id="modal-title">Title</h1>
+            <h2 id="modal-author">Author</h2>
+            <p id="modal-desc">Description</p>
+            <div id="modal-footer">
+              <a href="" id="modal-link" target="blank">
+                <button id="modal-button">View Project</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="blocker">
+      <div id="loading-screen">
+        <div id="logos">
+          <img src="assets/logos/logoleft.png" alt="Dyson School of Design Engineering" id="logo" />
+          <img
+            src="assets/logos/logoright.png"
+            alt="Imperial College London | Royal College of Art"
+            id="logo"
+          />
+        </div>
+        <img src="assets/loader.gif" id="loading-bulb" />
+        <div class="loading-bar"><div id="progress-bar"></div></div>
+      </div>
+      <div id="crosshair">&bull;</div>
+      <div id="instructions-screen">
+        <span style="font-size: 36px">Click to Look Around</span><br /><br />Move: WASD or Arrow
+        Keys<br />Look: MOUSE
+      </div>
+      <div id="info-screen">
+        <span style="font-size: 36px" id="info-name"></span><br /><span id="info-author"></span>
+      </div>
+      <div id="escape-screen">
+        <span>Press</span> <span class="escape">Esc</span> <span>to show your cursor</span>
+      </div>
+      <div id="name-screen">
+        <span style="font-size: 32px">Enter Your Name</span>
+        <span style="font-size: 16px">or leave blank to be anonymous</span>
+        <form action="#" autocomplete="off" id="name-form">
+          <input type="text" id="name-input" tabindex="0" /><button id="form-submit">
+            &#x21B3;
+          </button>
+          <div class="break"></div>
+          <span id="name-hint">20/20 remaining</span>
+        </form>
+      </div>
+    </div>
+    
+  </body>
+</html>

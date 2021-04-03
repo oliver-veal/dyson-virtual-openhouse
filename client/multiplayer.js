@@ -1,9 +1,10 @@
 import { io } from 'socket.io-client'
 
 import * as THREE from 'three/build/three.module.js'
-import { GameObject } from './game.js'
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 
 import { SpriteText } from './spritetext.js'
+import { GameObject } from './game.js'
 
 export class Multiplayer extends GameObject {
   Init() {

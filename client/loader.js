@@ -42,7 +42,7 @@ export class Loader extends GameObject {
     const loader = new GLTFLoader()
 
     const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('./three/examples/js/libs/draco/')
+    dracoLoader.setDecoderPath('/draco/')
     dracoLoader.setDecoderConfig({})
     dracoLoader.setWorkerLimit(4)
 

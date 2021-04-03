@@ -20,20 +20,16 @@ class App {
       immutable: true,
     }
 
-    app.use(express.static(path.join(__dirname, './client'), cacheHeaders))
-    app.use('/dist', express.static(path.join(__dirname, './dist'), cacheHeaders))
-    // app.use('/cacheassets', express.static(path.join(__dirname, './client/assets'), cacheHeaders))
+    app.use(express.static(path.join(__dirname, './dist'), cacheHeaders))
+    app.use('/assets', express.static(path.join(__dirname, './client/assets'), cacheHeaders))
     app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
-    // app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
-    // app.use(
-    //   '/three/examples',
-    //   express.static(path.join(__dirname, './node_modules/three/examples')),
-    // )
-    // app.use('/three', express.static('/Users/oli/code/three.js'))
-
-    // app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
-    app.use('/localforage', express.static(path.join(__dirname, './node_modules/localforage/dist')))
-    // app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
+    app.use(
+      '/draco',
+      express.static(
+        path.join(__dirname, './node_modules/three/examples/js/libs/draco'),
+        cacheHeaders,
+      ),
+    )
 
     this.server = new http.Server(app)
 

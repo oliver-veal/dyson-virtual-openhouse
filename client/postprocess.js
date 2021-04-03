@@ -5,12 +5,14 @@ import { GameObject } from './game.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 
-import { ShaderPass } from './three/examples/jsm/postprocessing/ShaderPass.js'
-import { OutlinePass } from './three/examples/jsm/postprocessing/OutlinePass.js'
-import { FXAAShader } from './three/examples/jsm/shaders/FXAAShader.js'
-import { SMAAPass } from './three/examples/jsm/postprocessing/SMAAPass.js'
-import { SSAARenderPass } from './three/examples/jsm/postprocessing/SSAARenderPass.js'
-import { TAARenderPass } from './three/examples/jsm/postprocessing/TAARenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
+import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js'
+import { SSAARenderPass } from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
+import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass.js'
+
+//
 
 export class PostProcessing extends GameObject {
   Init() {

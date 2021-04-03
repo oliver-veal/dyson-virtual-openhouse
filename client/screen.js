@@ -1,6 +1,7 @@
 import { GameObject } from './game.js'
 
 import * as BezierEasing from 'bezier-easing/dist/bezier-easing.min.js'
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 
 export class Screen extends GameObject {
   Init(name, display) {
