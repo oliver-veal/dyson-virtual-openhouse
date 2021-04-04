@@ -1,4 +1,4 @@
-import * as THREE from 'three/build/three.module.js'
+import { Vector2 } from 'three'
 
 import { GameObject } from './game.js'
 
@@ -12,18 +12,14 @@ import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js'
 import { SSAARenderPass } from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
 import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass.js'
 
-//
-
 export class PostProcessing extends GameObject {
   Init() {
     this.renderScene = new RenderPass(this.game.scene, this.game.camera)
 
     this.fxaaPass = new ShaderPass(FXAAShader)
-    this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
-    this.aaPass.sampleLevel = 1
-    this.aaPass.unbiased = true
-
-    console.log(this.game.renderer.getMaxAnisotropy())
+    // this.aaPass = new TAARenderPass(this.game.scene, this.game.camera)
+    // this.aaPass.sampleLevel = 1
+    // this.aaPass.unbiased = true
 
     this.SetFXAAPixelRatio = () => {
       const pixelRatio = this.game.renderer.getPixelRatio()
@@ -35,7 +31,7 @@ export class PostProcessing extends GameObject {
     this.SetFXAAPixelRatio()
 
     this.outlinePass = new OutlinePass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      new Vector2(window.innerWidth, window.innerHeight),
       this.game.scene,
       this.game.camera,
     )
@@ -45,7 +41,7 @@ export class PostProcessing extends GameObject {
 
     this.composer = new EffectComposer(this.game.renderer)
     this.composer.addPass(this.renderScene)
-    this.composer.addPass(this.aaPass)
+    // this.composer.addPass(this.aaPass)
     this.composer.addPass(this.outlinePass)
     this.composer.addPass(this.fxaaPass)
 

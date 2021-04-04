@@ -1,5 +1,4 @@
-import * as THREE from 'three/build/three.module.js'
-import * as localforage from 'localforage/dist/localforage.js'
+import { WebGLRenderer, PerspectiveCamera, Scene, AmbientLight, Clock } from 'three'
 
 export class Game {
   constructor() {
@@ -18,67 +17,20 @@ export class Game {
     this.container = document.createElement('div')
     document.body.appendChild(this.container)
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true })
+    this.renderer = new WebGLRenderer({ antialias: true })
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.container.appendChild(this.renderer.domElement)
 
-    this.camera = new THREE.PerspectiveCamera(
-      80,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      2000,
-    )
+    this.camera = new PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.01, 2000)
 
-    // const axesHelper = new THREE.AxesHelper( 5 );
+    // const axesHelper = new AxesHelper( 5 );
     // this.scene.add( axesHelper );
 
-    this.scene = new THREE.Scene()
-    this.scene.add(new THREE.AmbientLight(0xffffff, 1))
+    this.scene = new Scene()
+    this.scene.add(new AmbientLight(0xffffff, 1))
 
-    this.clock = new THREE.Clock()
-
-    localforage.config({
-      name: 'misc_load_file_storage',
-      storeName: 'three_cache',
-    })
-
-    localforage
-      .keys()
-      .then(function (keys) {
-        // An array of all the key names.
-        console.log(keys)
-      })
-      .catch(function (err) {
-        // This code runs if there were any errors
-        console.log(err)
-      })
-
-    THREE.Cache.enabled = true
-
-    THREE.Cache.add = (key, value, callback) => {
-      localforage.setItem(key, value, callback)
-    }
-
-    THREE.Cache.get = (key, callback) => {
-      return localforage.getItem(key, function (error, value) {
-        // NOTE By default local storage returns only null, never undefined
-
-        if (value === null) {
-          callback(undefined)
-        } else {
-          callback(value)
-        }
-      })
-    }
-
-    THREE.Cache.remove = (key, callback) => {
-      localforage.removeItem(key, callback)
-    }
-
-    THREE.Cache.clear = () => {
-      localforage.clear()
-    }
+    this.clock = new Clock()
 
     window.addEventListener('resize', () => {
       const width = window.innerWidth

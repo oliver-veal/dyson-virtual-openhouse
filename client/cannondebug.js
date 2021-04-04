@@ -1,6 +1,15 @@
-import * as THREE from 'three/build/three.module.js'
+import {
+  MeshBasicMaterial,
+  SphereGeometry,
+  BoxGeometry,
+  PlaneGeometry,
+  CylinderGeometry,
+  BufferGeometry,
+  Mesh,
+  Float32BufferAttribute,
+} from 'three'
 
-import * as CANNON from 'cannon/build/cannon.min.js'
+import { Vec3, Sphere, Box, Plane, ConvexPolyhedron, Trimesh, Heightfield, Shape } from 'cannon'
 /**
  * Adds Three.js primitives into the scene where all the Cannon bodies and shapes are.
  * @class CannonDebugRenderer
@@ -16,21 +25,21 @@ export var CannonDebugRenderer = function (scene, world, options) {
 
   this._meshes = []
 
-  this._boxMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: true })
-  this._triMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-  this._sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+  this._boxMaterial = new MeshBasicMaterial({ color: 0x0000ff, wireframe: true })
+  this._triMaterial = new MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+  this._sphereMaterial = new MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 
-  this._sphereGeometry = new THREE.SphereGeometry(1)
-  this._boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-  this._planeGeometry = new THREE.PlaneGeometry(10, 10, 10, 10)
-  this._cylinderGeometry = new THREE.CylinderGeometry(1, 1, 10, 10)
+  this._sphereGeometry = new SphereGeometry(1)
+  this._boxGeometry = new BoxGeometry(1, 1, 1)
+  this._planeGeometry = new PlaneGeometry(10, 10, 10, 10)
+  this._cylinderGeometry = new CylinderGeometry(1, 1, 10, 10)
 }
 
 CannonDebugRenderer.prototype = {
-  tmpVec0: new CANNON.Vec3(),
-  tmpVec1: new CANNON.Vec3(),
-  tmpVec2: new CANNON.Vec3(),
-  tmpQuat0: new CANNON.Vec3(),
+  tmpVec0: new Vec3(),
+  tmpVec1: new Vec3(),
+  tmpVec2: new Vec3(),
+  tmpQuat0: new Vec3(),
 
   update: function () {
     var bodies = this.world.bodies
@@ -94,12 +103,12 @@ CannonDebugRenderer.prototype = {
     }
     var geo = mesh.geometry
     return (
-      (geo instanceof THREE.SphereGeometry && shape instanceof CANNON.Sphere) ||
-      (geo instanceof THREE.BoxGeometry && shape instanceof CANNON.Box) ||
-      (geo instanceof THREE.PlaneGeometry && shape instanceof CANNON.Plane) ||
-      (geo.id === shape.geometryId && shape instanceof CANNON.ConvexPolyhedron) ||
-      (geo.id === shape.geometryId && shape instanceof CANNON.Trimesh) ||
-      (geo.id === shape.geometryId && shape instanceof CANNON.Heightfield)
+      (geo instanceof SphereGeometry && shape instanceof Sphere) ||
+      (geo instanceof BoxGeometry && shape instanceof Box) ||
+      (geo instanceof PlaneGeometry && shape instanceof Plane) ||
+      (geo.id === shape.geometryId && shape instanceof ConvexPolyhedron) ||
+      (geo.id === shape.geometryId && shape instanceof Trimesh) ||
+      (geo.id === shape.geometryId && shape instanceof Heightfield)
     )
   },
 
@@ -111,21 +120,21 @@ CannonDebugRenderer.prototype = {
     var purple = this._triMaterial
 
     switch (shape.type) {
-      case CANNON.Shape.types.SPHERE:
-        mesh = new THREE.Mesh(this._sphereGeometry, yellow)
+      case Shape.types.SPHERE:
+        mesh = new Mesh(this._sphereGeometry, yellow)
         break
 
-      case CANNON.Shape.types.BOX:
-        mesh = new THREE.Mesh(this._boxGeometry, cyan)
+      case Shape.types.BOX:
+        mesh = new Mesh(this._boxGeometry, cyan)
         break
 
-      case CANNON.Shape.types.PLANE:
-        mesh = new THREE.Mesh(this._planeGeometry, yellow)
+      case Shape.types.PLANE:
+        mesh = new Mesh(this._planeGeometry, yellow)
         break
 
-      case CANNON.Shape.types.CONVEXPOLYHEDRON:
+      case Shape.types.CONVEXPOLYHEDRON:
         // // Create mesh
-        const geometry = new THREE.BufferGeometry()
+        const geometry = new BufferGeometry()
 
         let vertices = []
 
@@ -146,13 +155,13 @@ CannonDebugRenderer.prototype = {
         }
 
         geometry.setIndex(indices)
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+        geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3))
 
-        mesh = new THREE.Mesh(geometry, cyan)
+        mesh = new Mesh(geometry, cyan)
         shape.geometryId = geometry.id
         break
 
-      case CANNON.Shape.types.TRIMESH:
+      case Shape.types.TRIMESH:
         // var geometry = new THREE.BufferGeometry();
         // var v0 = this.tmpVec0;
         // var v1 = this.tmpVec1;
@@ -215,25 +224,25 @@ CannonDebugRenderer.prototype = {
 
   _scaleMesh: function (mesh, shape) {
     switch (shape.type) {
-      case CANNON.Shape.types.SPHERE:
+      case Shape.types.SPHERE:
         var radius = shape.radius
         mesh.scale.set(radius, radius, radius)
         break
 
-      case CANNON.Shape.types.BOX:
+      case Shape.types.BOX:
         mesh.scale.copy(shape.halfExtents)
         mesh.scale.multiplyScalar(2)
         break
 
-      case CANNON.Shape.types.CONVEXPOLYHEDRON:
+      case Shape.types.CONVEXPOLYHEDRON:
         // mesh.scale.copy(shape.scale);
         break
 
-      case CANNON.Shape.types.TRIMESH:
+      case Shape.types.TRIMESH:
         // mesh.scale.copy(shape.scale);
         break
 
-      case CANNON.Shape.types.HEIGHTFIELD:
+      case Shape.types.HEIGHTFIELD:
         mesh.scale.set(1, 1, 1)
         break
     }

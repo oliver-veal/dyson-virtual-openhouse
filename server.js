@@ -20,9 +20,10 @@ class App {
       immutable: true,
     }
 
-    app.use(express.static(path.join(__dirname, './dist'), cacheHeaders))
+    app.use(
+      express.static(path.join(__dirname, './dist'), { extensions: ['html'], ...cacheHeaders }),
+    )
     app.use('/assets', express.static(path.join(__dirname, './client/assets'), cacheHeaders))
-    app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
     app.use(
       '/draco',
       express.static(

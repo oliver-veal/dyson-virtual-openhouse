@@ -70,6 +70,10 @@ export class LoadingScreen extends Screen {
       document.getElementById('progress-bar').style.width = progress + '%'
     })
 
+    this.game.events.RegisterEventListener('AssetCacheHit', this, ({ key }) => {
+      if (key.includes('scene')) document.getElementById('progress-bar').style.width = '100%'
+    })
+
     this.game.events.RegisterEventListener('OnWorldLoad', this, () => {
       this.Hide()
       let op = 1 // initial opacity

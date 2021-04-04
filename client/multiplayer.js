@@ -1,6 +1,7 @@
 import { io } from 'socket.io-client'
 
-import * as THREE from 'three/build/three.module.js'
+import { SphereGeometry, Group, MeshPhongMaterial, Color, Mesh } from 'three'
+
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 
 import { SpriteText } from './spritetext.js'
@@ -8,7 +9,7 @@ import { GameObject } from './game.js'
 
 export class Multiplayer extends GameObject {
   Init() {
-    this.geometry = new THREE.SphereGeometry(0.25, 32, 32)
+    this.geometry = new SphereGeometry(0.25, 32, 32)
 
     this.socket = io()
     this.sId = ''
@@ -57,16 +58,16 @@ export class Multiplayer extends GameObject {
     this.socket.on('clients', (clients) => {
       Object.keys(clients).forEach((c) => {
         if (!this.clientMeshes[c] && c !== this.sId) {
-          const group = new THREE.Group()
+          const group = new Group()
 
-          const material = new THREE.MeshPhongMaterial({
-            color: new THREE.Color(
+          const material = new MeshPhongMaterial({
+            color: new Color(
               `rgb(${clients[c].color.r}, ${clients[c].color.g}, ${clients[c].color.b})`,
             ),
           })
           material.opacity = 0.3
           material.transparent = true
-          const playerSphere = new THREE.Mesh(this.geometry, material)
+          const playerSphere = new Mesh(this.geometry, material)
           group.add(playerSphere)
 
           let clientName = clients[c].name

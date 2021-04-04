@@ -1,4 +1,4 @@
-import * as THREE from 'three/build/three.module.js'
+import { Vector3 } from 'three'
 import { Game } from './game.js'
 
 import { PostProcessing } from './postprocess.js'
@@ -20,7 +20,7 @@ import { Modal } from './modal.js'
 import { Collision } from './collision.js'
 
 import { CannonDebugRenderer } from './cannondebug.js'
-import Stats from 'three/examples/jsm/libs/stats.module.js'
+// import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 
 import './main.css'
@@ -28,10 +28,11 @@ import './main.css'
 class OpenHouse extends Game {
   constructor() {
     super()
-    this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
+    this.camera.lookAt(new Vector3(-1, 0, 0))
     this.camera.position.set(13, 1.6, -0.75)
 
-    this.AddGameObject(new Loader())
+    const ASSET_VERSION = 4
+    this.AddGameObject(new Loader(ASSET_VERSION))
 
     this.postProcessing = this.AddGameObject(new PostProcessing())
     this.input = this.AddGameObject(new Input())

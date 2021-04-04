@@ -1,4 +1,6 @@
-import * as THREE from 'three/build/three.module.js'
+import { Vector3 } from 'three'
+
+import { Vec3 } from 'cannon'
 
 import { PointerLockControls } from './CustomPointerLockControls.js'
 import { GameObject } from './game.js'
@@ -19,13 +21,13 @@ export class Movement extends GameObject {
       panLeft: false,
       right: false,
       panRight: false,
-      velocity: new THREE.Vector3(),
-      direction: new THREE.Vector3(),
-      axisDirection: new THREE.Vector3(),
-      cameraDirection: new THREE.Vector3(),
-      u: new THREE.Vector3(0, 1, 0),
-      f: new THREE.Vector3(1, 0, 0),
-      d: new THREE.Vector3(0, -1, 0),
+      velocity: new Vector3(),
+      direction: new Vector3(),
+      axisDirection: new Vector3(),
+      cameraDirection: new Vector3(),
+      u: new Vector3(0, 1, 0),
+      f: new Vector3(1, 0, 0),
+      d: new Vector3(0, -1, 0),
     }
 
     this.movementSettings = {
@@ -133,12 +135,12 @@ export class Movement extends GameObject {
 
   THREE2CANNON(v) {
     let { x, y, z } = v
-    return new CANNON.Vec3(x, y, z)
+    return new Vec3(x, y, z)
   }
 
   CANNON2THREE(v) {
     let { x, y, z } = v
-    return new THREE.Vector3(x, y, z)
+    return new Vector3(x, y, z)
   }
 
   GetMovementDirection() {
