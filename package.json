@@ -19,6 +19,8 @@
   },
   "main": "server.js",
   "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
     "format": "npm run format:documents && npm run format:scripts && npm run format:styles",
     "format:documents": "prettier --write \"**/*.html\"",
     "format:scripts": "prettier --write \"**/*.js\" && eslint --ext \".js\" --fix",
@@ -35,18 +37,27 @@
     "localforage": "^1.9.0",
     "node-fetch": "^2.6.1",
     "socket.io": "^4.0.0",
-    "three": "^0.126.1"
+    "socket.io-client": "^4.0.1",
+    "three": "github:oliver-veal/three.js"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
     "@babel/eslint-parser": "^7.13.10",
+    "css-loader": "^5.2.0",
+    "css-minimizer-webpack-plugin": "^1.3.0",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.0",
     "prettier": "^2.2.1",
+    "style-loader": "^2.0.0",
     "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
-    "stylelint-order": "^4.1.0"
+    "stylelint-order": "^4.1.0",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
   }
 }

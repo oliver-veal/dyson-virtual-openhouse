@@ -519,22 +519,6 @@ canvas {
   width: 50%;
 }
 
-#stats {
-  color: rgb(29, 29, 27);
-  margin-top: 200px;
-  text-align: center;
-  width: 100%;
-}
-
-#count {
-  font-size: 96px;
-}
-
-#users {
-  font-size: 22px;
-  margin-top: 200px;
-}
-
 @-webkit-keyframes ssc-loading {
   from {
     -webkit-transform: translateX(-100%);

@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-weight: 300;
+  src: url('assets/fonts/HelveticaNeue-Light.woff');
+}
+
+body {
+  background-color: #fff;
+  color: rgb(29, 29, 27);
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 24px;
+  margin: 0;
+}
+
+#stats {
+  margin-top: 200px;
+  text-align: center;
+  width: 100%;
+}
+
+#count {
+  font-size: 96px;
+}
+
+#users {
+  font-size: 22px;
+  margin-top: 200px;
+}

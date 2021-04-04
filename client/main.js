@@ -1,4 +1,4 @@
-import * as THREE from './three/build/three.module.js'
+import { Vector3 } from 'three'
 import { Game } from './game.js'
 
 import { PostProcessing } from './postprocess.js'
@@ -20,31 +20,31 @@ import { Modal } from './modal.js'
 import { Collision } from './collision.js'
 
 import { CannonDebugRenderer } from './cannondebug.js'
-import Stats from './three/examples/jsm/libs/stats.module.js'
+// import Stats from 'three/examples/jsm/libs/stats.module.js'
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
+
+import './main.css'
 
 class OpenHouse extends Game {
   constructor() {
     super()
-    this.camera.lookAt(new THREE.Vector3(-1, 0, 0))
+    this.camera.lookAt(new Vector3(-1, 0, 0))
     this.camera.position.set(13, 1.6, -0.75)
 
-    this.AddGameObject(new Loader())
+    const ASSET_VERSION = 4
+    this.AddGameObject(new Loader(ASSET_VERSION))
 
     this.postProcessing = this.AddGameObject(new PostProcessing())
     this.input = this.AddGameObject(new Input())
     this.collision = this.AddGameObject(new Collision())
     this.movement = this.AddGameObject(new Movement())
     this.select = this.AddGameObject(new Select())
-    this.multiplayer = this.AddGameObject(new Multiplayer())
-    this.ui = this.AddGameObject(new UI())
-    this.events.Trigger('FetchProjectNames', {})
 
     this.loadingScreen = this.AddGameObject(new LoadingScreen())
     this.nameScreen = this.AddGameObject(new NameScreen())
     this.instructionsScreen = this.AddGameObject(new InstructionsScreen())
     this.escapeScreen = this.AddGameObject(new EscapeScreen())
     this.infoScreen = this.AddGameObject(new InfoScreen())
-
     this.modal = this.AddGameObject(new Modal())
 
     // Random stuff too small to put in a separate module:
@@ -57,6 +57,12 @@ class OpenHouse extends Game {
 
     this.events.RegisterEventListener('ScreenBlurOff', this, () => {
       this.renderer.domElement.style.filter = 'blur(0px)'
+    })
+
+    this.events.RegisterEventListener('OnWorldLoad', this, () => {
+      this.multiplayer = this.AddGameObject(new Multiplayer())
+      this.ui = this.AddGameObject(new UI())
+      this.events.Trigger('FetchProjectNames', {})
     })
 
     this.debug = new CannonDebugRenderer(this.scene, this.collision.world, {})

@@ -14,24 +14,23 @@ class App {
 
     const app = express()
 
-    app.use(express.static(path.join(__dirname, './client')))
+    const cacheHeaders = {
+      cacheControl: true,
+      maxAge: 604800,
+      immutable: true,
+    }
+
     app.use(
-      '/cacheassets',
-      express.static(path.join(__dirname, './client/assets'), {
-        cacheControl: true,
-        maxAge: 604800,
-        immutable: true,
-      }),
+      express.static(path.join(__dirname, './dist'), { extensions: ['html'], ...cacheHeaders }),
     )
-    app.use('/stats', express.static(path.join(__dirname, './client/stats.html')))
-    app.use('/three/build', express.static(path.join(__dirname, './node_modules/three/build')))
+    app.use('/assets', express.static(path.join(__dirname, './client/assets'), cacheHeaders))
     app.use(
-      '/three/examples',
-      express.static(path.join(__dirname, './node_modules/three/examples')),
+      '/draco',
+      express.static(
+        path.join(__dirname, './node_modules/three/examples/js/libs/draco'),
+        cacheHeaders,
+      ),
     )
-    app.use('/cannon', express.static(path.join(__dirname, './node_modules/cannon/build')))
-    app.use('/localforage', express.static(path.join(__dirname, './node_modules/localforage/dist')))
-    app.use('/bezier', express.static(path.join(__dirname, './node_modules/bezier-easing/dist')))
 
     this.server = new http.Server(app)
 

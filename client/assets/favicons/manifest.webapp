@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "Virtual Open House",
+  "description": null,
+  "icons": {
+    "60": "/assets/favicons/firefox_app_60x60.png",
+    "128": "/assets/favicons/firefox_app_128x128.png",
+    "512": "/assets/favicons/firefox_app_512x512.png"
+  },
+  "developer": {
+    "name": "Oliver Veal",
+    "url": "https://github.com/oliver-veal"
+  }
+}

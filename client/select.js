@@ -1,4 +1,4 @@
-import * as THREE from './three/build/three.module.js'
+import { Vector2, Vector3, Raycaster } from 'three'
 
 import { GameObject } from './game.js'
 
@@ -25,14 +25,14 @@ export class Select extends GameObject {
       }
     })
 
-    this.mouse = new THREE.Vector2()
+    this.mouse = new Vector2()
 
     window.addEventListener('mousemove', (event) => {
       this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
       this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     })
 
-    this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 5)
+    this.raycaster = new Raycaster(new Vector3(), new Vector3(0, -1, 0), 0, 5)
 
     this.selectedObject = null
 

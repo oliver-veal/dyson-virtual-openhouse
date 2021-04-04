@@ -1,8 +1,7 @@
-import * as THREE from './three/build/three.module.js'
-
 import { GameObject } from './game.js'
 
-import './bezier/bezier-easing.min.js'
+import * as BezierEasing from 'bezier-easing/dist/bezier-easing.min.js'
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 
 export class Screen extends GameObject {
   Init(name, display) {
@@ -69,6 +68,10 @@ export class LoadingScreen extends Screen {
 
     this.game.events.RegisterEventListener('WorldLoadProgress', this, ({ progress }) => {
       document.getElementById('progress-bar').style.width = progress + '%'
+    })
+
+    this.game.events.RegisterEventListener('AssetCacheHit', this, ({ key }) => {
+      if (key.includes('scene')) document.getElementById('progress-bar').style.width = '100%'
     })
 
     this.game.events.RegisterEventListener('OnWorldLoad', this, () => {

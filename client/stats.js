@@ -1,3 +1,7 @@
+import { io } from 'socket.io-client'
+
+import './stats.css'
+
 class Stats {
   constructor() {
     this.socket = io()

@@ -1,4 +1,4 @@
-import { LinearFilter, Sprite, SpriteMaterial, Texture } from './three/build/three.module.js'
+import { LinearFilter, Sprite, SpriteMaterial, Texture } from 'three'
 
 const three =
   typeof window !== 'undefined' && window.THREE
