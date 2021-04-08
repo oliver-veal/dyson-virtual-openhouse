@@ -38,7 +38,7 @@
     "node-fetch": "^2.6.1",
     "socket.io": "^4.0.0",
     "socket.io-client": "^4.0.1",
-    "three": "git+https://github.com/oliver-veal/three.js.git"
+    "three": "github:oliver-veal/three.js"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
