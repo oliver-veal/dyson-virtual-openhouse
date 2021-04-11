@@ -56,7 +56,6 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
     "stylelint-order": "^4.1.0",
-    "three": "github:oliver-veal/three.js",
     "webpack": "^5.30.0",
     "webpack-cli": "^4.6.0"
   }
