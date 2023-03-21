@@ -1,6 +1,8 @@
 # Virtual Open House
 
-Three.js-powered virtual exhibition for the 2021 Design Engineering Showcase.
+[Live Exhibition](https://openhouse.deshowcase.london/)
+
+Three.js-powered virtual exhibition for the 2021 Imperial College London Design Engineering Showcase.
 
 ## Getting Started
 
