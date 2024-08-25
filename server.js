@@ -2,9 +2,8 @@ const express = require('express')
 const path = require('path')
 const http = require('http')
 const { Server } = require('socket.io')
-const fetch = require('node-fetch')
 
-const port = 3000
+const port = 3001
 
 class App {
   constructor(port) {
@@ -73,39 +72,41 @@ class App {
 
           // prof filter
 
-          fetch(
-            `https://api1-eu.webpurify.com/services/rest/?method=webpurify.live.check&format=json&api_key=6d6ad9e38472fbb9d57c8c1e31cda9e6&text=${name}`,
-            {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-            },
-          )
-            .then((r) => r.json())
-            .then((data) => {
-              console.log(name, data)
-              if (data.rsp) {
-                if ('found' in data.rsp) {
-                  if (Number(data.rsp.found) === 0) {
-                    this.Login(socket, name)
-                  } else {
-                    console.log('Profanity detected, logging in with blank name.')
-                    this.Login(socket, '')
-                  }
+          this.Login(socket, name)
 
-                  return
-                }
-              }
+          // fetch(
+          //   `https://api1-eu.webpurify.com/services/rest/?method=webpurify.live.check&format=json&api_key=6d6ad9e38472fbb9d57c8c1e31cda9e6&text=${name}`,
+          //   {
+          //     method: 'GET',
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //       Accept: 'application/json',
+          //     },
+          //   },
+          // )
+          //   .then((r) => r.json())
+          //   .then((data) => {
+          //     console.log(name, data)
+          //     if (data.rsp) {
+          //       if ('found' in data.rsp) {
+          //         if (Number(data.rsp.found) === 0) {
+          //           this.Login(socket, name)
+          //         } else {
+          //           console.log('Profanity detected, logging in with blank name.')
+          //           this.Login(socket, '')
+          //         }
 
-              console.log('Error in profanity filter response, logging in with blank name.')
-              this.Login(socket, '')
-            })
-            .catch((error) => {
-              console.error(error)
-              this.Login(socket, '')
-            })
+          //         return
+          //       }
+          //     }
+
+          //     console.log('Error in profanity filter response, logging in with blank name.')
+          //     this.Login(socket, '')
+          //   })
+          //   .catch((error) => {
+          //     console.error(error)
+          //     this.Login(socket, '')
+          //   })
         } else {
           this.Login(socket, '')
         }
