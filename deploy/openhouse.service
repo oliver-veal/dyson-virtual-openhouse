@@ -1,0 +1,13 @@
+[Unit]
+Description=Openhouse Showcase
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/openhouse
+ExecStart=/bin/bash -ac 'node server.js'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

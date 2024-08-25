@@ -1,0 +1,7 @@
+calltest.plyo.ai {
+	reverse_proxy localhost:8080
+}
+
+openhouse.oliverveal.com {
+	reverse_proxy localhost:3001
+}

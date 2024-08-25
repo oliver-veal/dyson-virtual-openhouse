@@ -5,15 +5,16 @@ push:
 .PHONY: deploy
 deploy:
 		make push
-		ssh calltest.plyo.ai "cd app && make build && sudo systemctl restart app.service"
+		ssh openhouse.oliverveal.com "sudo systemctl restart openhouse.service"
 
 .PHONY: install-caddy
 install-caddy:
 		sudo install deploy/Caddyfile /etc/caddy/Caddyfile
+		sudo systemctl restart caddy
 
 .PHONY: install-service
 install-service:
-		sudo install -m 0644 -D deploy/app.service /etc/systemd/system/app.service
+		sudo install -m 0644 -D deploy/openhouse.service /etc/systemd/system/openhouse.service
 		sudo systemctl daemon-reload
-		sudo systemctl enable app.service
-		sudo systemctl start app.service
+		sudo systemctl enable openhouse.service
+		sudo systemctl start openhouse.service
